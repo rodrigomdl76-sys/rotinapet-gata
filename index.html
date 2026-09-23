@@ -26,6 +26,20 @@ linear-gradient(180deg,#172d6eaa,#502d5c99 70%,#7e4a4b99);box-shadow:inset 0 0 6
 .toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:30;background:#fff;color:#24213d;padding:10px 14px;border-radius:14px;font-weight:800;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%)}
 @media(max-width:390px){.scene{min-height:370px}.pet-wrap{height:260px}.actions{gap:5px}.action{min-height:84px;font-size:11px}.quick button{font-size:10px}}
 </style>
+
+<style id="rp-next-stage">
+.pet-img{transition:transform .18s ease,opacity .16s ease}
+body.phase-1 .pet-img{transform:scale(.82);transform-origin:center bottom}
+body.phase-2 .pet-img{transform:scale(1);transform-origin:center bottom}
+body.phase-3 .pet-img{transform:scale(.86);transform-origin:center bottom}
+body.phase-4 .pet-img{transform:scale(.84);transform-origin:center bottom}
+.parent-fab{position:fixed;right:14px;bottom:88px;z-index:18;width:48px;height:48px;border:0;border-radius:50%;background:#6d4aff;color:#fff;font-size:22px;box-shadow:0 8px 24px #0006}
+.parent-panel{position:fixed;inset:0;z-index:40;background:#080b20ee;display:none;padding:20px;overflow:auto}
+.parent-panel.show{display:block}.parent-card{max-width:500px;margin:auto;background:#151b42;border:1px solid #555c98;border-radius:22px;padding:16px}
+.parent-card h2{margin:0 0 12px}.parent-card input,.parent-card select{width:100%;padding:11px;margin:5px 0;border-radius:11px;border:1px solid #555c98;background:#0e1434;color:#fff}
+.parent-card button{border:0;border-radius:12px;padding:10px 12px;background:#654cff;color:#fff;font-weight:800;margin:4px 2px}
+.parent-task{display:flex;align-items:center;gap:7px;background:#ffffff0b;border-radius:12px;padding:8px;margin-top:7px}.parent-task span{flex:1}.danger{background:#8f3150!important}
+</style>
 </head>
 <body>
 <main class="app">
@@ -63,6 +77,31 @@ linear-gradient(180deg,#172d6eaa,#502d5c99 70%,#7e4a4b99);box-shadow:inset 0 0 6
 </div>
 </main>
 
+
+<button class="parent-fab" onclick="openParents()" aria-label="Área dos responsáveis">⚙️</button>
+<section class="parent-panel" id="parentPanel">
+ <div class="parent-card">
+  <h2>👨‍👩‍👧 Área dos responsáveis</h2>
+  <div id="pinGate">
+   <p>Digite o PIN dos responsáveis.</p>
+   <input id="pinInput" inputmode="numeric" maxlength="4" type="password" placeholder="PIN de 4 dígitos">
+   <button onclick="unlockParents()">Entrar</button>
+  </div>
+  <div id="parentContent" style="display:none">
+   <h3>Nova tarefa</h3>
+   <input id="newTaskText" maxlength="80" placeholder="Ex.: Arrumar a cama">
+   <select id="newTaskType"><option value="obrigatoria">Obrigatória</option><option value="extra">Extra</option></select>
+   <input id="newTaskCoins" type="number" min="0" max="100" value="5" placeholder="Moedas">
+   <input id="newTaskXp" type="number" min="0" max="100" value="20" placeholder="XP">
+   <button onclick="addTask()">+ Adicionar</button>
+   <h3>Tarefas</h3><div id="parentTasks"></div>
+   <h3>Segurança</h3>
+   <input id="newPin" inputmode="numeric" maxlength="4" type="password" placeholder="Novo PIN de 4 dígitos">
+   <button onclick="changePin()">Alterar PIN</button>
+   <button onclick="closeParents()">Fechar</button>
+  </div>
+ </div>
+</section>
 <nav class="nav">
  <button class="active"><span>🏠</span>Início</button>
  <button onclick="scrollTasks()"><span>🗓️</span>Tarefas</button>
@@ -83,7 +122,8 @@ const PET={
  ]
 };
 const DEFAULT={
- moedas:15,streak:0,nivel:1,xp:0,faseTeste:1,
+ moedas:15,streak:0,nivel:1,xp:0,faseTeste:1,pin:'1234',
+ ultimoReset:'',ultimoDiaOfensiva:'',
  tarefas:[
   {id:1,texto:'Escovar os dentes',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
   {id:2,texto:'Arrumar a cama',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
@@ -91,9 +131,29 @@ const DEFAULT={
  ]
 };
 let state=load();
-function load(){try{return {...DEFAULT,...JSON.parse(localStorage.getItem(SAVE)||'{}')}}catch(_){return structuredClone(DEFAULT)}}
+function localDay(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+function load(){
+ try{
+  const old=JSON.parse(localStorage.getItem(SAVE)||'{}');
+  const data={...structuredClone(DEFAULT),...old};
+  data.tarefas=Array.isArray(old.tarefas)?old.tarefas:structuredClone(DEFAULT.tarefas);
+  return data;
+ }catch(_){return structuredClone(DEFAULT)}
+}
+function dailyReset(){
+ const today=localDay();
+ if(state.ultimoReset===today)return;
+ state.tarefas.forEach(t=>t.feito=false);
+ state.ultimoReset=today;save();
+}
+
 function save(){localStorage.setItem(SAVE,JSON.stringify(state))}
-function phase(){return Math.max(1,Math.min(4,Number(state.faseTeste)||1))}
+function phase(){
+ const test=Number(state.faseTeste);
+ if(test>=1&&test<=4)return test;
+ const n=Number(state.nivel)||1;
+ return n>=61?4:n>=41?3:n>=21?2:1;
+}
 function pad(n){return String(n).padStart(2,'0')}
 
 const SPRITES={
@@ -102,42 +162,156 @@ const SPRITES={
  danca:{count:12,ms:85},
  celebracao:{count:12,ms:85}
 };
-let animToken=0, animTimer=0, current='idle';
+let animToken=0, rafId=0, current='idle', actionLocked=false;
 const img=document.getElementById('petImg');
-function spriteUrl(action,index){return `assets/sprites/gato/fase${phase()}/${action}/${action}_${pad(index)}.png`}
+const spriteCache=new Map();
+const phaseReady=new Map();
+
+function spriteUrl(action,index,f=phase()){
+ return `assets/sprites/gato/fase${f}/${action}/${action}_${pad(index)}.png?v=perf3`;
+}
+function cacheKey(f,action,index){return `${f}:${action}:${index}`}
+
+function loadFrame(f,action,index){
+ const key=cacheKey(f,action,index);
+ if(spriteCache.has(key))return spriteCache.get(key);
+ const p=new Promise((resolve,reject)=>{
+  const im=new Image();
+  im.decoding='async';
+  im.onload=async()=>{
+   try{if(im.decode)await im.decode()}catch(_){}
+   resolve(im.src);
+  };
+  im.onerror=()=>reject(new Error(im.src));
+  im.src=spriteUrl(action,index,f);
+ });
+ spriteCache.set(key,p);
+ return p;
+}
+
+async function preloadAction(f,action){
+ const jobs=[];
+ for(let i=1;i<=SPRITES[action].count;i++)jobs.push(loadFrame(f,action,i).catch(()=>null));
+ return Promise.all(jobs);
+}
+async function preloadPhase(f){
+ if(phaseReady.has(f))return phaseReady.get(f);
+ const p=(async()=>{
+  await Promise.all([loadFrame(f,'idle',1),loadFrame(f,'idle',2)]);
+  preloadAction(f,'idle');
+  preloadAction(f,'carinho');
+  preloadAction(f,'danca');
+  preloadAction(f,'celebracao');
+  return true;
+ })();
+ phaseReady.set(f,p);
+ return p;
+}
+function warmAllPhases(){
+ [1,2,3,4].forEach((f,i)=>setTimeout(()=>preloadPhase(f).catch(()=>{}),250+i*180));
+}
 function showSpriteError(url){
- document.getElementById('petError').style.display='block';
- document.getElementById('petError').innerHTML=`Sprite não encontrado:<br><small>${url}</small>`;
+ const e=document.getElementById('petError');
+ e.style.display='block';
+ e.innerHTML=`Sprite não encontrado:<br><small>${url}</small>`;
  img.style.display='none';
 }
-function setFrame(action,index){
- const url=spriteUrl(action,index);
- img.onerror=()=>showSpriteError(url);
- img.onload=()=>{img.style.display='block';document.getElementById('petError').style.display='none'};
- img.src=url+'?v=clean1';
+async function setFrame(action,index,f=phase()){
+ try{
+  const url=await loadFrame(f,action,index);
+  img.onerror=()=>showSpriteError(url);
+  img.src=url;
+  img.style.display='block';
+  document.getElementById('petError').style.display='none';
+  return true;
+ }catch(_){
+  showSpriteError(spriteUrl(action,index,f));
+  return false;
+ }
+}
+function stopAnimation(){
+ if(rafId)cancelAnimationFrame(rafId);
+ rafId=0; animToken++;
+}
+async function startIdle(){
+ stopAnimation();
+ actionLocked=false;
+ current='idle';
+ const f=phase();
+ await preloadPhase(f).catch(()=>{});
+ const my=animToken;
+ let frame=1, last=0;
+ const tick=async(ts)=>{
+  if(my!==animToken || actionLocked)return;
+  if(!last || ts-last>=SPRITES.idle.ms){
+   last=ts;
+   await setFrame('idle',frame,f);
+   frame=frame>=SPRITES.idle.count?1:frame+1;
+  }
+  if(my===animToken && !actionLocked)rafId=requestAnimationFrame(tick);
+ };
+ rafId=requestAnimationFrame(tick);
+}
+async function playOnce(action){
+ if(actionLocked || !SPRITES[action])return;
+ stopAnimation();
+ actionLocked=true;
+ current=action;
+ const f=phase();
+ await preloadAction(f,action);
+ const my=animToken;
+ let frame=1,last=0;
+ const tick=async(ts)=>{
+  if(my!==animToken)return;
+  if(!last || ts-last>=SPRITES[action].ms){
+   last=ts;
+   await setFrame(action,frame,f);
+   if(frame>=SPRITES[action].count){
+    actionLocked=false;
+    startIdle();
+    return;
+   }
+   frame++;
+  }
+  if(my===animToken)rafId=requestAnimationFrame(tick);
+ };
+ rafId=requestAnimationFrame(tick);
 }
 function play(action='idle',loop=true){
- clearTimeout(animTimer); animToken++; const my=animToken;
- current=SPRITES[action]?action:'idle'; let i=1;
- const step=()=>{
-  if(my!==animToken)return;
-  setFrame(current,i++);
-  if(i>SPRITES[current].count){
-   if(!loop){play('idle',true);return}
-   i=1;
-  }
-  animTimer=setTimeout(step,SPRITES[current].ms);
- };
- step();
+ if(action==='idle'||loop)startIdle();
+ else playOnce(action);
 }
-function petAction(action){play(action,false);toast(action==='carinho'?'💗 Carinho!':'🎾 Hora de brincar!')}
-function feed(){state.xp=Math.min(100,state.xp+3);save();render();play('celebracao',false);toast('🥣 Nhac! +3 XP')}
+function petAction(action){
+ if(actionLocked)return;
+ playOnce(action);
+ toast(action==='carinho'?'💗 Carinho!':action==='danca'?'💃 Hora de brincar!':'✨ Muito bem!');
+}
+function feed(){state.xp=Math.min(100,state.xp+3);save();render();playOnce('celebracao');toast('🥣 Nhac! +3 XP')}
 function sleepPet(){play('idle',true);toast('🌙 Hora de descansar')}
-function setPhase(n){state.faseTeste=n;save();render();play('idle',true);document.getElementById('phaseMenu').classList.remove('show')}
+async function setPhase(n){
+ if(Number(n)===phase()){document.getElementById('phaseMenu').classList.remove('show');return}
+ stopAnimation();
+ const next=Math.max(1,Math.min(4,Number(n)||1));
+ const oldPhase=state.faseTeste;
+ state.faseTeste=next;save();render();
+ document.getElementById('phaseMenu').classList.remove('show');
+ const wrap=document.getElementById('petTap');
+ wrap.style.opacity='.55';
+ try{
+  await preloadPhase(next);
+  await setFrame('idle',1,next);
+ }finally{
+  wrap.style.transition='opacity .16s ease';
+  wrap.style.opacity='1';
+  startIdle();
+ }
+}
 function togglePhases(){document.getElementById('phaseMenu').classList.toggle('show')}
 
 function render(){
  const f=phase(), evo=PET.evolucoes[f-1];
+ document.body.classList.remove('phase-1','phase-2','phase-3','phase-4');
+ document.body.classList.add('phase-'+f);
  document.getElementById('phaseName').textContent=`Fase ${f} • ${evo.nome}`;
  document.getElementById('phaseShort').textContent=`Fase ${f}`;
  document.getElementById('coins').textContent=state.moedas;
@@ -150,15 +324,58 @@ function render(){
  document.getElementById('extraCount').textContent=`${ext.filter(t=>t.feito).length}/${ext.length}`;
  document.getElementById('taskList').innerHTML=state.tarefas.map(t=>`<label class="task ${t.feito?'done':''}"><input type="checkbox" ${t.feito?'checked':''} onchange="toggleTask(${t.id},this.checked)"><span>${t.tipo==='obrigatoria'?'📌':'⭐'} ${t.texto} · +${t.recompensa} 🪙</span></label>`).join('')||'<div class="empty">Nenhuma missão cadastrada.</div>';
 }
+function evaluateStreak(){
+ const req=state.tarefas.filter(t=>t.tipo==='obrigatoria');
+ if(!req.length||!req.every(t=>t.feito))return;
+ const today=localDay();
+ if(state.ultimoDiaOfensiva===today)return;
+ const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+ const y=`${yesterday.getFullYear()}-${pad(yesterday.getMonth()+1)}-${pad(yesterday.getDate())}`;
+ state.streak=state.ultimoDiaOfensiva===y?(Number(state.streak)||0)+1:1;
+ state.ultimoDiaOfensiva=today;
+ playOnce('celebracao');toast('🔥 Ofensiva mantida!');
+}
 function toggleTask(id,done){
  const t=state.tarefas.find(x=>x.id===id);if(!t)return;
- if(done&&!t.feito){state.moedas+=t.recompensa;state.xp=Math.min(100,state.xp+t.xp);play('celebracao',false)}
- t.feito=done;save();render();
+ if(done&&!t.feito){
+  state.moedas+=Number(t.recompensa)||0;
+  state.xp=Math.min(100,(Number(state.xp)||0)+(Number(t.xp)||0));
+  playOnce('celebracao');
+ }
+ t.feito=done;
+ evaluateStreak();save();render();
 }
 function scrollTasks(){document.getElementById('tasks').scrollIntoView({behavior:'smooth'})}
 let toastTimer;function toast(s){const e=document.getElementById('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),1800)}
+
+function openParents(){document.getElementById('parentPanel').classList.add('show');document.getElementById('pinGate').style.display='block';document.getElementById('parentContent').style.display='none';document.getElementById('pinInput').value=''}
+function closeParents(){document.getElementById('parentPanel').classList.remove('show')}
+function unlockParents(){
+ if(document.getElementById('pinInput').value!==String(state.pin||'1234'))return toast('PIN incorreto');
+ document.getElementById('pinGate').style.display='none';document.getElementById('parentContent').style.display='block';renderParentTasks();
+}
+function renderParentTasks(){
+ document.getElementById('parentTasks').innerHTML=state.tarefas.map(t=>`<div class="parent-task"><span>${t.tipo==='obrigatoria'?'📌':'⭐'} ${t.texto}</span><button onclick="editTask(${t.id})">Editar</button><button class="danger" onclick="deleteTask(${t.id})">×</button></div>`).join('')||'<small>Nenhuma tarefa.</small>';
+}
+function addTask(){
+ const texto=document.getElementById('newTaskText').value.trim();if(!texto)return toast('Digite a tarefa');
+ state.tarefas.push({id:Date.now(),texto,tipo:document.getElementById('newTaskType').value,feito:false,recompensa:Math.max(0,Number(document.getElementById('newTaskCoins').value)||0),xp:Math.max(0,Number(document.getElementById('newTaskXp').value)||0)});
+ document.getElementById('newTaskText').value='';save();render();renderParentTasks();toast('Tarefa adicionada');
+}
+function deleteTask(id){state.tarefas=state.tarefas.filter(t=>t.id!==id);save();render();renderParentTasks()}
+function editTask(id){
+ const t=state.tarefas.find(x=>x.id===id);if(!t)return;
+ const texto=prompt('Nome da tarefa:',t.texto);if(texto===null)return;
+ const tipo=prompt('Tipo: obrigatoria ou extra',t.tipo);if(tipo===null)return;
+ t.texto=texto.trim()||t.texto;t.tipo=tipo.toLowerCase()==='extra'?'extra':'obrigatoria';save();render();renderParentTasks();
+}
+function changePin(){
+ const p=document.getElementById('newPin').value.trim();
+ if(!/^\d{4}$/.test(p))return toast('Use um PIN de 4 números');
+ state.pin=p;save();document.getElementById('newPin').value='';toast('PIN alterado');
+}
 document.getElementById('petTap').addEventListener('click',()=>petAction('carinho'));
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)play('idle',true)});
-render();play('idle',true);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAnimation();else startIdle()});
+dailyReset();render();preloadPhase(phase()).finally(()=>startIdle());warmAllPhases();
 </script>
 </body></html>
