@@ -29,16 +29,29 @@ linear-gradient(180deg,#172d6eaa,#502d5c99 70%,#7e4a4b99);box-shadow:inset 0 0 6
 
 <style id="rp-next-stage">
 .pet-img{transition:transform .18s ease,opacity .16s ease}
-body.phase-1 .pet-img{transform:scale(.82);transform-origin:center bottom}
+body.phase-1 .pet-img{transform:scale(.57);transform-origin:center bottom}
 body.phase-2 .pet-img{transform:scale(1);transform-origin:center bottom}
-body.phase-3 .pet-img{transform:scale(.86);transform-origin:center bottom}
-body.phase-4 .pet-img{transform:scale(.84);transform-origin:center bottom}
+body.phase-3 .pet-img{transform:scale(.60);transform-origin:center bottom}
+body.phase-4 .pet-img{transform:scale(.59);transform-origin:center bottom}
 .parent-fab{position:fixed;right:14px;bottom:88px;z-index:18;width:48px;height:48px;border:0;border-radius:50%;background:#6d4aff;color:#fff;font-size:22px;box-shadow:0 8px 24px #0006}
 .parent-panel{position:fixed;inset:0;z-index:40;background:#080b20ee;display:none;padding:20px;overflow:auto}
 .parent-panel.show{display:block}.parent-card{max-width:500px;margin:auto;background:#151b42;border:1px solid #555c98;border-radius:22px;padding:16px}
 .parent-card h2{margin:0 0 12px}.parent-card input,.parent-card select{width:100%;padding:11px;margin:5px 0;border-radius:11px;border:1px solid #555c98;background:#0e1434;color:#fff}
 .parent-card button{border:0;border-radius:12px;padding:10px 12px;background:#654cff;color:#fff;font-weight:800;margin:4px 2px}
 .parent-task{display:flex;align-items:center;gap:7px;background:#ffffff0b;border-radius:12px;padding:8px;margin-top:7px}.parent-task span{flex:1}.danger{background:#8f3150!important}
+</style>
+
+<style id="rp-games-v5">
+.game-overlay{position:fixed;inset:0;z-index:60;background:#070a20f2;display:none;padding:18px;overflow:auto}
+.game-overlay.show{display:block}.game-card{max-width:500px;margin:auto;background:#141b45;border:1px solid #5962a3;border-radius:24px;padding:16px;box-shadow:0 20px 60px #0008}
+.game-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.game-head h2{margin:0}.game-close{border:0;background:#ffffff18;border-radius:12px;padding:8px 12px;font-size:18px}
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.game-choice{border:1px solid #515da5;background:#0e1539;border-radius:18px;padding:15px 8px;min-height:105px;font-weight:900}.game-choice span{display:block;font-size:35px;margin-bottom:6px}.game-choice small{display:block;color:#b8c1e5;margin-top:4px}
+.game-area{display:none;text-align:center;margin-top:15px}.game-area.show{display:block}.game-title{font-size:26px;font-weight:950;margin:12px 0}.answer-grid,.memory-grid,.reaction-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.answer-grid button,.memory-grid button,.reaction-grid button{border:1px solid #5964ad;background:#20295d;border-radius:16px;min-height:62px;font-size:22px;font-weight:900}
+.memory-grid button.active{transform:scale(1.08);background:#6954db}.memory-grid button.wrong{background:#8e2948}
+.stars-area{height:300px;position:relative;border-radius:20px;background:radial-gradient(circle at 50% 30%,#334f9d,#111638);overflow:hidden;border:1px solid #5964ad}
+.star-target{position:absolute;border:0;background:none;font-size:34px;filter:drop-shadow(0 0 8px #ffd84a);animation:starPulse .65s infinite alternate}
+@keyframes starPulse{to{transform:scale(1.25) rotate(10deg)}}.game-status{color:#c6cdef;font-weight:800;margin:10px 0}.game-back{border:0;background:#ffffff16;border-radius:12px;padding:9px 13px;margin-top:12px}
 </style>
 </head>
 <body>
@@ -102,10 +115,29 @@ body.phase-4 .pet-img{transform:scale(.84);transform-origin:center bottom}
   </div>
  </div>
 </section>
+
+<section class="game-overlay" id="gameOverlay">
+ <div class="game-card">
+  <div class="game-head"><h2>🎮 Jogos da Gatinha</h2><button class="game-close" onclick="closeGames()">×</button></div>
+  <div id="gameHub">
+   <p style="color:#bdc5e8">Jogue para ganhar pequenas recompensas. Os jogos não substituem as tarefas.</p>
+   <div class="game-grid">
+    <button class="game-choice" onclick="startMath()"><span>🧮</span>Matemática<small>+1 🪙 · +1 XP</small></button>
+    <button class="game-choice" onclick="startMemory()"><span>🧠</span>Memória<small>+2 🪙 · +2 XP</small></button>
+    <button class="game-choice" onclick="startReaction()"><span>⚡</span>Reação<small>+1 🪙 · +1 XP</small></button>
+    <button class="game-choice" onclick="startStars()"><span>⭐</span>Caça-estrelas<small>+3 🪙 · +3 XP</small></button>
+   </div>
+  </div>
+  <div class="game-area" id="mathGame"><div class="game-title" id="mathQuestion"></div><div class="answer-grid" id="mathAnswers"></div><button class="game-back" onclick="showGameHub()">← Jogos</button></div>
+  <div class="game-area" id="memoryGame"><div class="game-status" id="memoryStatus"></div><div class="memory-grid" id="memoryGrid"></div><button class="game-back" onclick="showGameHub()">← Jogos</button></div>
+  <div class="game-area" id="reactionGame"><div class="game-title">Toque em <span id="reactionTarget"></span></div><div class="reaction-grid" id="reactionGrid"></div><div class="game-status">Você tem 5 segundos.</div><button class="game-back" onclick="showGameHub()">← Jogos</button></div>
+  <div class="game-area" id="starsGame"><div class="game-status" id="starsStatus"></div><div class="stars-area" id="starsArea"></div><button class="game-back" onclick="showGameHub()">← Jogos</button></div>
+ </div>
+</section>
 <nav class="nav">
  <button class="active"><span>🏠</span>Início</button>
  <button onclick="scrollTasks()"><span>🗓️</span>Tarefas</button>
- <button onclick="toast('Conquistas será implementado depois')"><span>🏆</span>Conquistas</button>
+ <button onclick="openGames()"><span>🎮</span>Jogos</button>
  <button onclick="toast('Loja será implementada depois')"><span>🛍️</span>Loja</button>
  <button onclick="toast('Mais opções serão adicionadas depois')"><span>•••</span>Mais</button>
 </nav>
@@ -123,7 +155,7 @@ const PET={
 };
 const DEFAULT={
  moedas:15,streak:0,nivel:1,xp:0,faseTeste:1,pin:'1234',
- ultimoReset:'',ultimoDiaOfensiva:'',
+ ultimoReset:'',ultimoDiaOfensiva:'',jogosHoje:0,ultimoDiaJogos:'',
  tarefas:[
   {id:1,texto:'Escovar os dentes',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
   {id:2,texto:'Arrumar a cama',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
@@ -347,6 +379,59 @@ function toggleTask(id,done){
 }
 function scrollTasks(){document.getElementById('tasks').scrollIntoView({behavior:'smooth'})}
 let toastTimer;function toast(s){const e=document.getElementById('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),1800)}
+
+
+// ===== MINIJOGOS =====
+let gameTimer=null, mathCorrect=0, memorySeq=[], memoryPos=0, memoryLocked=true, starsCaught=0;
+const GAME_IDS=['mathGame','memoryGame','reactionGame','starsGame'];
+function openGames(){clearTimeout(gameTimer);document.getElementById('gameOverlay').classList.add('show');showGameHub()}
+function closeGames(){clearTimeout(gameTimer);document.getElementById('gameOverlay').classList.remove('show');showGameHub()}
+function showGameHub(){clearTimeout(gameTimer);GAME_IDS.forEach(id=>document.getElementById(id).classList.remove('show'));document.getElementById('gameHub').style.display='block'}
+function showOnlyGame(id){clearTimeout(gameTimer);document.getElementById('gameHub').style.display='none';GAME_IDS.forEach(x=>document.getElementById(x).classList.toggle('show',x===id))}
+function rewardGame(coins,xp,msg){
+ state.moedas=(Number(state.moedas)||0)+coins;state.xp=Math.min(100,(Number(state.xp)||0)+xp);
+ state.jogosHoje=(Number(state.jogosHoje)||0)+1;state.ultimoDiaJogos=localDay();save();render();playOnce('celebracao');toast(`${msg} +${coins} 🪙 +${xp} XP`);showGameHub();
+}
+function startMath(){
+ showOnlyGame('mathGame');
+ let a=1+Math.floor(Math.random()*10),b=1+Math.floor(Math.random()*10),op=Math.random()>.45?'+':'-';
+ if(op==='-'&&b>a)[a,b]=[b,a];mathCorrect=op==='+'?a+b:a-b;
+ document.getElementById('mathQuestion').textContent=`${a} ${op} ${b} = ?`;
+ let opts=[mathCorrect];while(opts.length<4){let v=Math.max(0,mathCorrect+Math.floor(Math.random()*9)-4);if(!opts.includes(v))opts.push(v)}
+ opts.sort(()=>Math.random()-.5);document.getElementById('mathAnswers').innerHTML=opts.map(v=>`<button onclick="answerMath(${v})">${v}</button>`).join('');
+}
+function answerMath(v){if(v===mathCorrect)rewardGame(1,1,'🧮 Acertou!');else toast('❌ Tente novamente')}
+const MEMORY_EMOJI=['🐱','🐾','🎀','⭐'];
+function startMemory(){
+ showOnlyGame('memoryGame');memorySeq=Array.from({length:4},()=>Math.floor(Math.random()*4));memoryPos=0;memoryLocked=true;
+ document.getElementById('memoryGrid').innerHTML=MEMORY_EMOJI.map((e,i)=>`<button id="mem${i}" onclick="tapMemory(${i})">${e}</button>`).join('');
+ document.getElementById('memoryStatus').textContent='Observe a sequência...';let k=0;
+ const flash=()=>{if(k>=memorySeq.length){memoryLocked=false;document.getElementById('memoryStatus').textContent='Sua vez!';return}
+  const el=document.getElementById('mem'+memorySeq[k]);if(!el)return;el.classList.add('active');setTimeout(()=>{el.classList.remove('active');k++;setTimeout(flash,180)},390)};
+ setTimeout(flash,500);
+}
+function tapMemory(i){
+ if(memoryLocked)return;const el=document.getElementById('mem'+i);el.classList.add('active');setTimeout(()=>el.classList.remove('active'),160);
+ if(memorySeq[memoryPos]!==i){memoryLocked=true;el.classList.add('wrong');toast('❌ Ops! Veja a sequência novamente');setTimeout(startMemory,700);return}
+ memoryPos++;if(memoryPos>=memorySeq.length){memoryLocked=true;rewardGame(2,2,'🧠 Memória incrível!')}
+}
+const REACTION_EMOJI=['🍎','🍌','🍇','🍊','🍉','🍓'];
+function startReaction(){
+ showOnlyGame('reactionGame');const arr=[...REACTION_EMOJI].sort(()=>Math.random()-.5);const target=Math.floor(Math.random()*6);
+ document.getElementById('reactionTarget').textContent=arr[target];
+ document.getElementById('reactionGrid').innerHTML=arr.map((e,i)=>`<button onclick="answerReaction(${i===target})">${e}</button>`).join('');
+ gameTimer=setTimeout(()=>{toast('⏰ Tempo esgotado');showGameHub()},5000);
+}
+function answerReaction(ok){clearTimeout(gameTimer);if(ok)rewardGame(1,1,'⚡ Reflexo rápido!');else toast('❌ Não era esse')}
+function startStars(){
+ showOnlyGame('starsGame');starsCaught=0;document.getElementById('starsStatus').textContent='Pegue 5 estrelas em 12 segundos!';spawnStar();
+ gameTimer=setTimeout(()=>{if(starsCaught<5){toast('⏰ As estrelas escaparam');showGameHub()}},12000);
+}
+function spawnStar(){
+ const area=document.getElementById('starsArea');if(!area||!document.getElementById('starsGame').classList.contains('show'))return;area.innerHTML='';
+ const b=document.createElement('button');b.className='star-target';b.textContent='⭐';b.style.left=(5+Math.random()*82)+'%';b.style.top=(5+Math.random()*75)+'%';
+ b.onclick=()=>{starsCaught++;document.getElementById('starsStatus').textContent=`⭐ ${starsCaught}/5`;if(starsCaught>=5){clearTimeout(gameTimer);rewardGame(3,3,'⭐ Caça às estrelas!')}else spawnStar()};area.appendChild(b);
+}
 
 function openParents(){document.getElementById('parentPanel').classList.add('show');document.getElementById('pinGate').style.display='block';document.getElementById('parentContent').style.display='none';document.getElementById('pinInput').value=''}
 function closeParents(){document.getElementById('parentPanel').classList.remove('show')}
