@@ -102,7 +102,7 @@ const SPRITES={
  danca:{count:12,ms:85},
  celebracao:{count:12,ms:85}
 };
-let animToken=0, animTimer=0, current='idle';
+let animToken=0, animTimer=0, current='idle', actionLocked=false;
 const img=document.getElementById('petImg');
 function spriteUrl(action,index){return `assets/sprites/gato/fase${phase()}/${action}/${action}_${pad(index)}.png`}
 function showSpriteError(url){
@@ -114,26 +114,44 @@ function setFrame(action,index){
  const url=spriteUrl(action,index);
  img.onerror=()=>showSpriteError(url);
  img.onload=()=>{img.style.display='block';document.getElementById('petError').style.display='none'};
- img.src=url+'?v=clean1';
+ img.src=url+'?v=actions2';
 }
-function play(action='idle',loop=true){
- clearTimeout(animTimer); animToken++; const my=animToken;
- current=SPRITES[action]?action:'idle'; let i=1;
+function startIdle(){
+ clearTimeout(animTimer); animToken++; actionLocked=false; current='idle';
+ const my=animToken; let i=1;
  const step=()=>{
-  if(my!==animToken)return;
-  setFrame(current,i++);
-  if(i>SPRITES[current].count){
-   if(!loop){play('idle',true);return}
-   i=1;
-  }
-  animTimer=setTimeout(step,SPRITES[current].ms);
+  if(my!==animToken || actionLocked)return;
+  setFrame('idle',i);
+  i=i>=SPRITES.idle.count?1:i+1;
+  animTimer=setTimeout(step,SPRITES.idle.ms);
  };
  step();
 }
-function petAction(action){play(action,false);toast(action==='carinho'?'💗 Carinho!':'🎾 Hora de brincar!')}
-function feed(){state.xp=Math.min(100,state.xp+3);save();render();play('celebracao',false);toast('🥣 Nhac! +3 XP')}
+function playOnce(action){
+ if(actionLocked || !SPRITES[action])return;
+ clearTimeout(animTimer); animToken++; actionLocked=true; current=action;
+ const my=animToken; let i=1;
+ const step=()=>{
+  if(my!==animToken)return;
+  setFrame(action,i);
+  if(i>=SPRITES[action].count){
+   animTimer=setTimeout(()=>{if(my!==animToken)return;actionLocked=false;startIdle()},SPRITES[action].ms);
+   return;
+  }
+  i++;
+  animTimer=setTimeout(step,SPRITES[action].ms);
+ };
+ step();
+}
+function play(action='idle',loop=true){if(action==='idle'||loop)startIdle();else playOnce(action)}
+function petAction(action){
+ if(actionLocked)return;
+ playOnce(action);
+ toast(action==='carinho'?'💗 Carinho!':action==='danca'?'💃 Hora de brincar!':'✨ Muito bem!');
+}
+function feed(){state.xp=Math.min(100,state.xp+3);save();render();playOnce('celebracao');toast('🥣 Nhac! +3 XP')}
 function sleepPet(){play('idle',true);toast('🌙 Hora de descansar')}
-function setPhase(n){state.faseTeste=n;save();render();play('idle',true);document.getElementById('phaseMenu').classList.remove('show')}
+function setPhase(n){state.faseTeste=n;save();render();startIdle();document.getElementById('phaseMenu').classList.remove('show')}
 function togglePhases(){document.getElementById('phaseMenu').classList.toggle('show')}
 
 function render(){
@@ -152,13 +170,13 @@ function render(){
 }
 function toggleTask(id,done){
  const t=state.tarefas.find(x=>x.id===id);if(!t)return;
- if(done&&!t.feito){state.moedas+=t.recompensa;state.xp=Math.min(100,state.xp+t.xp);play('celebracao',false)}
+ if(done&&!t.feito){state.moedas+=t.recompensa;state.xp=Math.min(100,state.xp+t.xp);playOnce('celebracao')}
  t.feito=done;save();render();
 }
 function scrollTasks(){document.getElementById('tasks').scrollIntoView({behavior:'smooth'})}
 let toastTimer;function toast(s){const e=document.getElementById('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),1800)}
 document.getElementById('petTap').addEventListener('click',()=>petAction('carinho'));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)play('idle',true)});
-render();play('idle',true);
+render();startIdle();
 </script>
 </body></html>
