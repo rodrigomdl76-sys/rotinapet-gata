@@ -53,7 +53,44 @@ body.phase-4 .pet-img{transform:scale(.59);transform-origin:center bottom}
 .star-target{position:absolute;border:0;background:none;font-size:34px;filter:drop-shadow(0 0 8px #ffd84a);animation:starPulse .65s infinite alternate}
 @keyframes starPulse{to{transform:scale(1.25) rotate(10deg)}}.game-status{color:#c6cdef;font-weight:800;margin:10px 0}.game-back{border:0;background:#ffffff16;border-radius:12px;padding:9px 13px;margin-top:12px}
 </style>
-</head>
+
+<style id="rp-evolution-v6">
+.evo-overlay{position:fixed;inset:0;z-index:80;background:radial-gradient(circle at 50% 40%,#5b45b7ee,#080b22fa 65%);display:none;align-items:center;justify-content:center;padding:20px;text-align:center}
+.evo-overlay.show{display:flex}.evo-card{max-width:390px;width:100%;background:#151b45;border:1px solid #7771d5;border-radius:28px;padding:24px;box-shadow:0 25px 80px #0009}
+.evo-spark{font-size:48px;animation:evoPulse .7s infinite alternate}.evo-card h2{font-size:29px;margin:8px 0}.evo-card button{border:0;border-radius:14px;padding:12px 20px;background:#7657ff;color:white;font-weight:900;font-size:16px}
+@keyframes evoPulse{to{transform:scale(1.22) rotate(8deg);filter:drop-shadow(0 0 18px #ffd85a)}}
+.evo-info{font-size:12px;color:#c8cdef;margin-top:5px}
+</style>
+
+<style id="rp-shop-v7">
+.shop-overlay{position:fixed;inset:0;z-index:70;background:#080b22f5;display:none;padding:18px;overflow:auto}.shop-overlay.show{display:block}
+.shop-card{max-width:520px;margin:auto;background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:16px}.shop-head{display:flex;justify-content:space-between;align-items:center}.shop-head h2{margin:0}.shop-head button{border:0;background:#ffffff18;border-radius:12px;padding:8px 12px;font-size:18px}
+.shop-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.shop-tabs button{border:1px solid #5962a3;background:#101638;color:white;border-radius:13px;padding:11px;font-weight:900}
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.shop-item{background:#0d1435;border:1px solid #4d5796;border-radius:18px;padding:13px;text-align:center}.shop-item .ico{font-size:36px;display:block}.shop-item b{display:block;margin:5px}.shop-item small{color:#bbc4e7}.shop-item button{width:100%;border:0;border-radius:11px;padding:9px;margin-top:8px;background:#654cff;color:#fff;font-weight:900}
+.room.theme-night{background:linear-gradient(180deg,#121a48,#293b76 58%,#5a4770)!important}.room.theme-sunset{background:linear-gradient(180deg,#e98578,#efaa79 48%,#69537b)!important}.room.theme-forest{background:linear-gradient(180deg,#173c3b,#37654d 55%,#746348)!important}.room.theme-candy{background:linear-gradient(180deg,#a67bd8,#ef9fca 55%,#ffd1bd)!important}
+.pet-accessory{position:absolute;z-index:7;pointer-events:none;font-size:42px;left:50%;top:25%;transform:translate(-50%,-50%);filter:drop-shadow(0 4px 4px #0005)}
+body.phase-1 .pet-accessory{font-size:30px;top:31%}body.phase-3 .pet-accessory{font-size:34px;top:29%}body.phase-4 .pet-accessory{font-size:34px;top:28%}
+</style>
+
+<style id="rp-achievements-v8">
+.ach-overlay{position:fixed;inset:0;z-index:75;background:#080b22f5;display:none;padding:18px;overflow:auto}.ach-overlay.show{display:block}
+.ach-card{max-width:520px;margin:auto;background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:16px}.ach-head{display:flex;justify-content:space-between;align-items:center}.ach-head h2{margin:0}.ach-head button{border:0;background:#ffffff18;border-radius:12px;padding:8px 12px;font-size:18px}
+.ach-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.ach-stat{background:#0e1538;border:1px solid #46508b;border-radius:15px;padding:10px;text-align:center}.ach-stat b{display:block;font-size:20px}
+.ach-list{display:grid;gap:9px}.ach-item{display:flex;align-items:center;gap:10px;background:#0e1538;border:1px solid #46508b;border-radius:16px;padding:11px}.ach-item.locked{opacity:.5}.ach-item .badge{font-size:31px}.ach-item .txt{flex:1}.ach-item .txt b,.ach-item .txt small{display:block}.ach-item small{color:#bbc4e7}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:13px}.day-dot{aspect-ratio:1;border-radius:11px;background:#0e1538;border:1px solid #46508b;display:flex;align-items:center;justify-content:center;font-size:12px}.day-dot.done{background:#425c3e}.day-dot.today{outline:2px solid #8b72ff}
+</style>
+
+<style id="rp-rewards-v9">
+.reward-overlay{position:fixed;inset:0;z-index:76;background:#080b22f5;display:none;padding:18px;overflow:auto}.reward-overlay.show{display:block}
+.reward-card{max-width:520px;margin:auto;background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:16px}.reward-head{display:flex;justify-content:space-between;align-items:center}.reward-head h2{margin:0}.reward-head button{border:0;background:#ffffff18;border-radius:12px;padding:8px 12px;font-size:18px}
+.reward-list{display:grid;gap:10px;margin-top:13px}.reward-item{display:flex;align-items:center;gap:11px;background:#0e1538;border:1px solid #46508b;border-radius:17px;padding:12px}.reward-icon{font-size:34px}.reward-info{flex:1}.reward-info b,.reward-info small{display:block}.reward-info small{color:#bbc4e7}.reward-item>button{border:0;border-radius:11px;padding:9px 11px;background:#654cff;color:white;font-weight:900}
+.reward-request{border-color:#9c7b42}.parent-reward-row{display:grid;grid-template-columns:1fr 75px 40px;gap:6px;margin:7px 0}.parent-reward-row input{min-width:0;border-radius:9px;border:1px solid #5962a3;padding:8px;background:#0d1435;color:white}.parent-reward-row button{border:0;border-radius:9px}
+</style>
+<style id="rp-daily-v10">
+.daily-overlay{position:fixed;inset:0;z-index:78;background:#080b22f5;display:none;padding:18px;overflow:auto}.daily-overlay.show{display:block}.daily-card{max-width:520px;margin:auto;background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:16px}.daily-head{display:flex;justify-content:space-between;align-items:center}.daily-head h2{margin:0}.daily-head button{border:0;background:#ffffff18;border-radius:12px;padding:8px 12px;font-size:18px}.daily-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:13px 0}.daily-stat{background:#0e1538;border:1px solid #46508b;border-radius:15px;padding:11px 5px;text-align:center}.daily-stat b{font-size:20px;display:block}.chest{font-size:68px;text-align:center;margin:12px}.chest-btn{display:block;width:100%;border:0;border-radius:14px;padding:13px;background:#6d54ff;color:white;font-weight:950}.chest-btn:disabled{opacity:.5}.goal-box{background:#0e1538;border:1px solid #46508b;border-radius:17px;padding:13px;margin-top:12px}.goal-bar{height:11px;background:#070b22;border-radius:99px;overflow:hidden;margin-top:8px}.goal-fill{height:100%;background:linear-gradient(90deg,#755cff,#f1b34a);border-radius:99px}
+</style><style id="rp-voice-v11">
+.voice-overlay{position:fixed;inset:0;z-index:80;background:#080b22f5;display:none;padding:18px;overflow:auto}.voice-overlay.show{display:block}.voice-card{max-width:520px;margin:auto;background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:16px}.voice-head{display:flex;justify-content:space-between;align-items:center}.voice-head button{border:0;background:#ffffff18;color:#fff;border-radius:12px;padding:8px 12px;font-size:18px}.voice-mic{font-size:70px;text-align:center;margin:16px}.voice-status{text-align:center;color:#bbc4e7;min-height:24px}.voice-record{width:100%;border:0;border-radius:15px;padding:14px;background:#e04d69;color:#fff;font-weight:950}.voice-record.recording{animation:pulseVoice 1s infinite}@keyframes pulseVoice{50%{transform:scale(.97);opacity:.72}}.voice-effects{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:14px}.voice-effects button{border:1px solid #5962a3;background:#0e1538;color:#fff;border-radius:14px;padding:12px;font-weight:900}.voice-effects button.active{outline:2px solid #9c8aff;background:#29245a}.voice-note{font-size:12px;color:#aeb7d9;margin-top:12px}
+</style></head>
 <body>
 <main class="app">
 <div class="layer">
@@ -108,6 +145,9 @@ body.phase-4 .pet-img{transform:scale(.59);transform-origin:center bottom}
    <input id="newTaskXp" type="number" min="0" max="100" value="20" placeholder="XP">
    <button onclick="addTask()">+ Adicionar</button>
    <h3>Tarefas</h3><div id="parentTasks"></div>
+   <h3>Meta diária</h3><div class="parent-reward-row"><input value="Tarefas para liberar o baú" disabled><input id="parentDailyGoal" type="number" min="1" max="10" value="3" onchange="setDailyGoal(this.value)"><span>🎯</span></div><h3>Recompensas</h3><div id="parentRewards"></div><h3>Evolução</h3>
+   <p class="evo-info" id="evoParentInfo"></p>
+   <button onclick="toggleTestMode()">🧪 Alternar modo teste / automático</button>
    <h3>Segurança</h3>
    <input id="newPin" inputmode="numeric" maxlength="4" type="password" placeholder="Novo PIN de 4 dígitos">
    <button onclick="changePin()">Alterar PIN</button>
@@ -116,6 +156,46 @@ body.phase-4 .pet-img{transform:scale(.59);transform-origin:center bottom}
  </div>
 </section>
 
+
+
+
+
+<section class="voice-overlay" id="voiceOverlay"><div class="voice-card"><div class="voice-head"><h2>🎙️ Voz da Gatinha</h2><button onclick="closeVoice()">×</button></div><div class="voice-mic">🎤</div><div class="voice-status" id="voiceStatus">Grave uma frase curta para a gatinha repetir.</div><button class="voice-record" id="voiceRecordBtn" onclick="toggleVoiceRecording()">● Gravar voz</button><h3>Efeito da voz</h3><div class="voice-effects"><button data-vfx="normal" onclick="setVoiceEffect('normal')">🙂 Normal</button><button data-vfx="fina" onclick="setVoiceEffect('fina')">🐿️ Fina</button><button data-vfx="grossa" onclick="setVoiceEffect('grossa')">🐻 Grossa</button><button data-vfx="robo" onclick="setVoiceEffect('robo')">🤖 Robô</button></div><p class="voice-note">A gravação fica somente neste dispositivo nesta versão.</p></div></section><section class="daily-overlay" id="dailyOverlay"><div class="daily-card"><div class="daily-head"><h2>📅 Resumo de hoje</h2><button onclick="closeDaily()">×</button></div><div class="daily-grid"><div class="daily-stat"><b id="dailyTasks">0</b><small>Tarefas</small></div><div class="daily-stat"><b id="dailyStreak">0🔥</b><small>Ofensiva</small></div><div class="daily-stat"><b id="dailyCoins">0</b><small>Moedas</small></div></div><div class="goal-box"><b>🎯 Meta diária</b><div id="dailyGoalText"></div><div class="goal-bar"><div class="goal-fill" id="dailyGoalFill"></div></div></div><div class="chest">🎁</div><button class="chest-btn" id="dailyChestBtn" onclick="openDailyChest()">Abrir baú diário</button><p id="dailyChestStatus" style="text-align:center;color:#bbc4e7"></p></div></section><section class="reward-overlay" id="rewardOverlay">
+ <div class="reward-card">
+  <div class="reward-head"><h2>🎁 Recompensas</h2><button onclick="closeRewards()">×</button></div>
+  <p>Troque suas moedas por recompensas combinadas com seus responsáveis.</p>
+  <p>Saldo: <b><span id="rewardCoins">0</span> 🪙</b></p>
+  <div class="reward-list" id="rewardList"></div>
+ </div>
+</section>
+<section class="ach-overlay" id="achOverlay">
+ <div class="ach-card">
+  <div class="ach-head"><h2>🏆 Conquistas</h2><button onclick="closeAchievements()">×</button></div>
+  <div class="ach-summary">
+   <div class="ach-stat"><b id="achDone">0</b><small>Conquistas</small></div>
+   <div class="ach-stat"><b id="achStreak">0🔥</b><small>Ofensiva</small></div>
+   <div class="ach-stat"><b id="achTasks">0</b><small>Tarefas</small></div>
+  </div>
+  <h3>Últimos 7 dias</h3><div class="week-grid" id="weekGrid"></div>
+  <h3>Medalhas</h3><div class="ach-list" id="achList"></div>
+ </div>
+</section>
+<section class="shop-overlay" id="shopOverlay">
+ <div class="shop-card">
+  <div class="shop-head"><h2>🛍️ Loja da Gatinha</h2><button onclick="closeShop()">×</button></div>
+  <p>Seu saldo: <b><span id="shopCoins">0</span> 🪙</b></p>
+  <div class="shop-tabs"><button onclick="shopTab('themes')">🎨 Ambientes</button><button onclick="shopTab('accessories')">🎀 Acessórios</button></div>
+  <div class="shop-grid" id="shopGrid"></div>
+ </div>
+</section>
+<section class="evo-overlay" id="evoOverlay">
+ <div class="evo-card">
+  <div class="evo-spark">✨🐱✨</div>
+  <h2 id="evoTitle">Sua gatinha evoluiu!</h2>
+  <p id="evoText"></p>
+  <button onclick="closeEvolution()">Continuar</button>
+ </div>
+</section>
 <section class="game-overlay" id="gameOverlay">
  <div class="game-card">
   <div class="game-head"><h2>🎮 Jogos da Gatinha</h2><button class="game-close" onclick="closeGames()">×</button></div>
@@ -138,9 +218,9 @@ body.phase-4 .pet-img{transform:scale(.59);transform-origin:center bottom}
  <button class="active"><span>🏠</span>Início</button>
  <button onclick="scrollTasks()"><span>🗓️</span>Tarefas</button>
  <button onclick="openGames()"><span>🎮</span>Jogos</button>
- <button onclick="toast('Loja será implementada depois')"><span>🛍️</span>Loja</button>
+ <button onclick="openShop()"><span>🛍️</span>Loja</button>
  <button onclick="toast('Mais opções serão adicionadas depois')"><span>•••</span>Mais</button>
-</nav>
+<button onclick="openDaily()"><span>📅</span>Hoje</button><button onclick="openVoice()"><span>🎙️</span>Voz</button></nav>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -156,6 +236,10 @@ const PET={
 const DEFAULT={
  moedas:15,streak:0,nivel:1,xp:0,faseTeste:1,pin:'1234',
  ultimoReset:'',ultimoDiaOfensiva:'',jogosHoje:0,ultimoDiaJogos:'',
+ xpTotal:0,faseReal:1,modoTesteFase:true,ultimaEvolucaoMostrada:1,
+ temaAtual:'padrao',temasComprados:['padrao'],acessorioAtual:'nenhum',acessoriosComprados:['nenhum'],
+ totalTarefasConcluidas:0,historicoDias:{},conquistas:{},totalJogosVencidos:0,
+ recompensas:[{id:1,nome:'Escolher o filme',custo:20,icone:'🎬'},{id:2,nome:'15 min de jogo',custo:25,icone:'🎮'}],solicitacoesRecompensas:[],bauAbertoData:'',metaDiariaTarefas:3,efeitoVoz:'fina',
  tarefas:[
   {id:1,texto:'Escovar os dentes',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
   {id:2,texto:'Arrumar a cama',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
@@ -180,11 +264,35 @@ function dailyReset(){
 }
 
 function save(){localStorage.setItem(SAVE,JSON.stringify(state))}
+const EVO_LIMITS=[0,100,300,600];
+function realPhaseFromXP(xp){
+ xp=Number(xp)||0;
+ return xp>=EVO_LIMITS[3]?4:xp>=EVO_LIMITS[2]?3:xp>=EVO_LIMITS[1]?2:1;
+}
 function phase(){
- const test=Number(state.faseTeste);
- if(test>=1&&test<=4)return test;
- const n=Number(state.nivel)||1;
- return n>=61?4:n>=41?3:n>=21?2:1;
+ if(state.modoTesteFase){
+  const test=Number(state.faseTeste);
+  if(test>=1&&test<=4)return test;
+ }
+ return Math.max(1,Math.min(4,Number(state.faseReal)||realPhaseFromXP(state.xpTotal)));
+}
+function evolutionProgress(){
+ const f=Math.max(1,Math.min(4,Number(state.faseReal)||1));
+ if(f>=4)return {pct:100,label:'Evolução máxima'};
+ const min=EVO_LIMITS[f-1],max=EVO_LIMITS[f];
+ const xp=Math.max(min,Number(state.xpTotal)||0);
+ return {pct:Math.max(0,Math.min(100,((xp-min)/(max-min))*100)),label:`${xp-min} / ${max-min} XP para Fase ${f+1}`};
+}
+function addEvolutionXP(amount){
+ amount=Math.max(0,Number(amount)||0);if(!amount)return;
+ state.xpTotal=(Number(state.xpTotal)||0)+amount;
+ const old=Math.max(1,Number(state.faseReal)||1),next=realPhaseFromXP(state.xpTotal);
+ state.faseReal=next;
+ if(next>old){
+  state.moedas=(Number(state.moedas)||0)+next*5;
+  state.ultimaEvolucaoMostrada=next;save();checkAchievements();
+  setTimeout(()=>showEvolution(next,next*5),250);
+ }
 }
 function pad(n){return String(n).padStart(2,'0')}
 
@@ -321,6 +429,7 @@ function petAction(action){
 function feed(){state.xp=Math.min(100,state.xp+3);save();render();playOnce('celebracao');toast('🥣 Nhac! +3 XP')}
 function sleepPet(){play('idle',true);toast('🌙 Hora de descansar')}
 async function setPhase(n){
+ state.modoTesteFase=true;
  if(Number(n)===phase()){document.getElementById('phaseMenu').classList.remove('show');return}
  stopAnimation();
  const next=Math.max(1,Math.min(4,Number(n)||1));
@@ -355,6 +464,7 @@ function render(){
  document.getElementById('requiredCount').textContent=`${req.filter(t=>t.feito).length}/${req.length}`;
  document.getElementById('extraCount').textContent=`${ext.filter(t=>t.feito).length}/${ext.length}`;
  document.getElementById('taskList').innerHTML=state.tarefas.map(t=>`<label class="task ${t.feito?'done':''}"><input type="checkbox" ${t.feito?'checked':''} onchange="toggleTask(${t.id},this.checked)"><span>${t.tipo==='obrigatoria'?'📌':'⭐'} ${t.texto} · +${t.recompensa} 🪙</span></label>`).join('')||'<div class="empty">Nenhuma missão cadastrada.</div>';
+ applyCustomization();
 }
 function evaluateStreak(){
  const req=state.tarefas.filter(t=>t.tipo==='obrigatoria');
@@ -370,16 +480,155 @@ function evaluateStreak(){
 function toggleTask(id,done){
  const t=state.tarefas.find(x=>x.id===id);if(!t)return;
  if(done&&!t.feito){
+  state.totalTarefasConcluidas=(Number(state.totalTarefasConcluidas)||0)+1;
+  state.historicoDias=state.historicoDias||{};state.historicoDias[localDay()]=(Number(state.historicoDias[localDay()])||0)+1;
   state.moedas+=Number(t.recompensa)||0;
   state.xp=Math.min(100,(Number(state.xp)||0)+(Number(t.xp)||0));
+  addEvolutionXP(Number(t.xp)||0);
   playOnce('celebracao');
  }
  t.feito=done;
- evaluateStreak();save();render();
+ evaluateStreak();save();checkAchievements();render();
 }
 function scrollTasks(){document.getElementById('tasks').scrollIntoView({behavior:'smooth'})}
 let toastTimer;function toast(s){const e=document.getElementById('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),1800)}
 
+
+
+function showEvolution(f,bonus){
+ state.modoTesteFase=false;state.faseTeste=0;save();render();
+ document.getElementById('evoTitle').textContent=`🎉 Fase ${f} desbloqueada!`;
+ document.getElementById('evoText').innerHTML=`Sua gatinha evoluiu de verdade.<br><b>+${bonus} 🪙 de bônus</b>`;
+ document.getElementById('evoOverlay').classList.add('show');playOnce('celebracao');
+}
+function closeEvolution(){document.getElementById('evoOverlay').classList.remove('show');preloadPhase(phase()).finally(()=>startIdle())}
+function toggleTestMode(){
+ state.modoTesteFase=!state.modoTesteFase;
+ if(!state.modoTesteFase)state.faseTeste=0;
+ save();render();startIdle();renderParentTasks();toast(state.modoTesteFase?'🧪 Modo teste ativado':'⭐ Evolução automática ativada');
+}
+
+
+
+
+function setDailyGoal(v){state.metaDiariaTarefas=Math.max(1,Math.min(10,Number(v)||3));save();toast('🎯 Meta diária atualizada')}
+function openDaily(){document.getElementById('dailyOverlay').classList.add('show');renderDaily()}
+function closeDaily(){document.getElementById('dailyOverlay').classList.remove('show')}
+function tasksDoneToday(){return Number(state.historicoDias?.[localDay()]||0)}
+function renderDaily(){const done=tasksDoneToday(),goal=Math.max(1,Number(state.metaDiariaTarefas)||3),pct=Math.min(100,done/goal*100);document.getElementById('dailyTasks').textContent=done;document.getElementById('dailyStreak').textContent=`${state.streak||0}🔥`;document.getElementById('dailyCoins').textContent=Math.floor(state.moedas||0);document.getElementById('dailyGoalText').textContent=`${done} de ${goal} tarefas concluídas`;document.getElementById('dailyGoalFill').style.width=pct+'%';const opened=state.bauAbertoData===localDay(),eligible=done>=goal,btn=document.getElementById('dailyChestBtn');btn.disabled=opened||!eligible;btn.textContent=opened?'Baú aberto ✓':eligible?'Abrir baú diário':'Complete a meta para liberar';document.getElementById('dailyChestStatus').textContent=opened?'Volte amanhã para um novo baú.':eligible?'Meta concluída! Seu baú está pronto.':`Faltam ${Math.max(0,goal-done)} tarefa(s).`}
+function openDailyChest(){if(state.bauAbertoData===localDay())return;const goal=Math.max(1,Number(state.metaDiariaTarefas)||3);if(tasksDoneToday()<goal)return toast('🔒 Complete a meta diária primeiro');const coins=5+Math.floor(Math.random()*6);state.moedas=(Number(state.moedas)||0)+coins;state.bauAbertoData=localDay();addEvolutionXP(5);save();checkAchievements();render();renderDaily();playOnce('celebracao');toast(`🎁 Baú aberto: +${coins} 🪙 +5 XP`)}
+
+// ===== RECOMPENSAS DEFINIDAS PELOS RESPONSÁVEIS =====
+function openRewards(){document.getElementById('rewardOverlay').classList.add('show');renderRewards()}
+function closeRewards(){document.getElementById('rewardOverlay').classList.remove('show')}
+function renderRewards(){
+ document.getElementById('rewardCoins').textContent=Math.floor(state.moedas||0);
+ const req=Array.isArray(state.solicitacoesRecompensas)?state.solicitacoesRecompensas:[];
+ document.getElementById('rewardList').innerHTML=(state.recompensas||[]).map(r=>{
+  const pending=req.some(x=>x.rewardId===r.id&&x.status==='pendente');
+  return `<div class="reward-item"><div class="reward-icon">${r.icone||'🎁'}</div><div class="reward-info"><b>${r.nome}</b><small>${r.custo} 🪙${pending?' • aguardando responsável':''}</small></div><button ${pending?'disabled':''} onclick="requestReward(${r.id})">${pending?'Solicitado':'Trocar'}</button></div>`;
+ }).join('') || '<p>Nenhuma recompensa cadastrada.</p>';
+}
+function requestReward(id){
+ const r=(state.recompensas||[]).find(x=>x.id===id);if(!r)return;
+ if((state.moedas||0)<r.custo)return toast('🪙 Você ainda não tem moedas suficientes');
+ state.solicitacoesRecompensas=Array.isArray(state.solicitacoesRecompensas)?state.solicitacoesRecompensas:[];
+ if(state.solicitacoesRecompensas.some(x=>x.rewardId===id&&x.status==='pendente'))return;
+ state.solicitacoesRecompensas.push({id:Date.now(),rewardId:id,nome:r.nome,custo:r.custo,status:'pendente',data:localDay()});
+ save();renderRewards();toast('🎁 Pedido enviado aos responsáveis');
+}
+function renderParentRewards(){
+ const box=document.getElementById('parentRewards');if(!box)return;
+ const rs=(state.recompensas||[]).map(r=>`<div class="parent-reward-row"><input value="${r.nome.replace(/"/g,'&quot;')}" onchange="editReward(${r.id},'nome',this.value)"><input type="number" min="1" value="${r.custo}" onchange="editReward(${r.id},'custo',this.value)"><button onclick="deleteReward(${r.id})">🗑️</button></div>`).join('');
+ const req=(state.solicitacoesRecompensas||[]).filter(x=>x.status==='pendente').map(x=>`<div class="reward-item reward-request"><div class="reward-icon">🎁</div><div class="reward-info"><b>${x.nome}</b><small>${x.custo} 🪙</small></div><button onclick="approveReward(${x.id})">✓</button><button onclick="denyReward(${x.id})">✕</button></div>`).join('');
+ box.innerHTML=rs+`<button onclick="addReward()">＋ Nova recompensa</button><h4>Pedidos pendentes</h4>${req||'<small>Nenhum pedido.</small>'}`;
+}
+function addReward(){state.recompensas=state.recompensas||[];state.recompensas.push({id:Date.now(),nome:'Nova recompensa',custo:20,icone:'🎁'});save();renderParentRewards()}
+function editReward(id,key,val){const r=(state.recompensas||[]).find(x=>x.id===id);if(!r)return;r[key]=key==='custo'?Math.max(1,Number(val)||1):String(val).slice(0,40);save()}
+function deleteReward(id){state.recompensas=(state.recompensas||[]).filter(x=>x.id!==id);save();renderParentRewards()}
+function approveReward(id){
+ const x=(state.solicitacoesRecompensas||[]).find(y=>y.id===id);if(!x)return;
+ if((state.moedas||0)<x.custo){x.status='negado';save();renderParentRewards();return toast('Moedas insuficientes no momento');}
+ state.moedas-=x.custo;x.status='aprovado';x.aprovadoEm=localDay();save();render();renderParentRewards();toast('🎉 Recompensa aprovada!');
+}
+function denyReward(id){const x=(state.solicitacoesRecompensas||[]).find(y=>y.id===id);if(!x)return;x.status='negado';save();renderParentRewards();toast('Pedido recusado')}
+
+// ===== CONQUISTAS / PROGRESSO =====
+const ACHIEVEMENTS=[
+ {id:'first',ico:'🌟',name:'Primeiro passo',desc:'Concluir a primeira tarefa',ok:()=>Number(state.totalTarefasConcluidas)>=1},
+ {id:'tasks10',ico:'✅',name:'Super ajudante',desc:'Concluir 10 tarefas',ok:()=>Number(state.totalTarefasConcluidas)>=10},
+ {id:'streak3',ico:'🔥',name:'Em ritmo',desc:'Manter ofensiva de 3 dias',ok:()=>Number(state.streak)>=3},
+ {id:'streak7',ico:'🏅',name:'Semana incrível',desc:'Manter ofensiva de 7 dias',ok:()=>Number(state.streak)>=7},
+ {id:'games5',ico:'🎮',name:'Jogadora',desc:'Vencer 5 minijogos',ok:()=>Number(state.totalJogosVencidos)>=5},
+ {id:'phase2',ico:'🐱',name:'Crescendo',desc:'Chegar à Fase 2',ok:()=>Number(state.faseReal)>=2},
+ {id:'phase4',ico:'👑',name:'Evolução máxima',desc:'Chegar à Fase 4',ok:()=>Number(state.faseReal)>=4},
+ {id:'coins100',ico:'🪙',name:'Cofrinho cheio',desc:'Ter 100 moedas',ok:()=>Number(state.moedas)>=100},
+ {id:'shop',ico:'🎀',name:'Estilosa',desc:'Comprar um item da loja',ok:()=>((state.temasComprados||[]).length>1||(state.acessoriosComprados||[]).length>1)}
+];
+function checkAchievements(){
+ state.conquistas=state.conquistas||{};let unlocked=[];
+ ACHIEVEMENTS.forEach(a=>{if(!state.conquistas[a.id]&&a.ok()){state.conquistas[a.id]=localDay();unlocked.push(a)}});
+ if(unlocked.length){save();setTimeout(()=>toast(`🏆 Conquista: ${unlocked[0].name}!`),350)}
+}
+function openAchievements(){checkAchievements();document.getElementById('achOverlay').classList.add('show');renderAchievements()}
+function closeAchievements(){document.getElementById('achOverlay').classList.remove('show')}
+function renderAchievements(){
+ const done=Object.keys(state.conquistas||{}).length;
+ document.getElementById('achDone').textContent=`${done}/${ACHIEVEMENTS.length}`;
+ document.getElementById('achStreak').textContent=`${state.streak||0}🔥`;
+ document.getElementById('achTasks').textContent=state.totalTarefasConcluidas||0;
+ document.getElementById('achList').innerHTML=ACHIEVEMENTS.map(a=>{const on=!!state.conquistas?.[a.id];return `<div class="ach-item ${on?'':'locked'}"><div class="badge">${on?a.ico:'🔒'}</div><div class="txt"><b>${a.name}</b><small>${a.desc}${on?' • '+state.conquistas[a.id]:''}</small></div></div>`}).join('');
+ const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;days.push({k,n:d.getDate()})}
+ document.getElementById('weekGrid').innerHTML=days.map(d=>`<div class="day-dot ${(state.historicoDias?.[d.k]||0)>0?'done':''} ${d.k===localDay()?'today':''}">${(state.historicoDias?.[d.k]||0)>0?'✓':d.n}</div>`).join('');
+}
+
+// ===== LOJA / AMBIENTES / ACESSÓRIOS =====
+const SHOP_THEMES=[
+ {id:'padrao',name:'Quarto aconchegante',ico:'🛏️',price:0,cls:''},
+ {id:'night',name:'Noite estrelada',ico:'🌙',price:35,cls:'theme-night'},
+ {id:'sunset',name:'Pôr do sol',ico:'🌅',price:45,cls:'theme-sunset'},
+ {id:'forest',name:'Floresta',ico:'🌿',price:55,cls:'theme-forest'},
+ {id:'candy',name:'Mundo doce',ico:'🍭',price:65,cls:'theme-candy'}
+];
+const SHOP_ACCESSORIES=[
+ {id:'nenhum',name:'Sem acessório',ico:'🐾',wear:'',price:0},
+ {id:'laco',name:'Laço rosa',ico:'🎀',wear:'🎀',price:25},
+ {id:'coroa',name:'Coroa',ico:'👑',wear:'👑',price:45},
+ {id:'oculos',name:'Óculos',ico:'🕶️',wear:'🕶️',price:35},
+ {id:'chapeu',name:'Chapéu',ico:'🎩',wear:'🎩',price:40}
+];
+let currentShopTab='themes';
+function openShop(){document.getElementById('shopOverlay').classList.add('show');shopTab(currentShopTab)}
+function closeShop(){document.getElementById('shopOverlay').classList.remove('show')}
+function shopTab(tab){currentShopTab=tab;renderShop()}
+function renderShop(){
+ document.getElementById('shopCoins').textContent=Math.floor(state.moedas||0);
+ const list=currentShopTab==='themes'?SHOP_THEMES:SHOP_ACCESSORIES;
+ const bought=currentShopTab==='themes'?(state.temasComprados||[]):(state.acessoriosComprados||[]);
+ const active=currentShopTab==='themes'?state.temaAtual:state.acessorioAtual;
+ document.getElementById('shopGrid').innerHTML=list.map(x=>{
+  const own=bought.includes(x.id),on=active===x.id;
+  return `<div class="shop-item"><span class="ico">${x.ico}</span><b>${x.name}</b><small>${on?'✓ Em uso':own?'Comprado':x.price+' 🪙'}</small><button onclick="buyOrUse('${currentShopTab}','${x.id}')">${on?'Em uso':own?'Usar':'Comprar'}</button></div>`;
+ }).join('');
+}
+function buyOrUse(tab,id){
+ const isTheme=tab==='themes',list=isTheme?SHOP_THEMES:SHOP_ACCESSORIES,item=list.find(x=>x.id===id);if(!item)return;
+ const key=isTheme?'temasComprados':'acessoriosComprados',active=isTheme?'temaAtual':'acessorioAtual';
+ state[key]=Array.isArray(state[key])?state[key]:[];
+ if(!state[key].includes(id)){
+  if((state.moedas||0)<item.price)return toast('🪙 Moedas insuficientes');
+  state.moedas-=item.price;state[key].push(id);toast(`🛍️ ${item.name} comprado!`);
+ }
+ state[active]=id;save();checkAchievements();applyCustomization();render();renderShop();
+}
+function applyCustomization(){
+ const room=document.querySelector('.room');if(room){
+  SHOP_THEMES.forEach(x=>{if(x.cls)room.classList.remove(x.cls)});
+  const t=SHOP_THEMES.find(x=>x.id===state.temaAtual);if(t?.cls)room.classList.add(t.cls);
+ }
+ const a=SHOP_ACCESSORIES.find(x=>x.id===state.acessorioAtual);
+ const layer=document.getElementById('petAccessory');if(layer)layer.textContent=a?.wear||'';
+}
 
 // ===== MINIJOGOS =====
 let gameTimer=null, mathCorrect=0, memorySeq=[], memoryPos=0, memoryLocked=true, starsCaught=0;
@@ -389,8 +638,11 @@ function closeGames(){clearTimeout(gameTimer);document.getElementById('gameOverl
 function showGameHub(){clearTimeout(gameTimer);GAME_IDS.forEach(id=>document.getElementById(id).classList.remove('show'));document.getElementById('gameHub').style.display='block'}
 function showOnlyGame(id){clearTimeout(gameTimer);document.getElementById('gameHub').style.display='none';GAME_IDS.forEach(x=>document.getElementById(x).classList.toggle('show',x===id))}
 function rewardGame(coins,xp,msg){
+ state.totalJogosVencidos=(Number(state.totalJogosVencidos)||0)+1;
  state.moedas=(Number(state.moedas)||0)+coins;state.xp=Math.min(100,(Number(state.xp)||0)+xp);
- state.jogosHoje=(Number(state.jogosHoje)||0)+1;state.ultimoDiaJogos=localDay();save();render();playOnce('celebracao');toast(`${msg} +${coins} 🪙 +${xp} XP`);showGameHub();
+ if(state.ultimoDiaJogos!==localDay())state.jogosHoje=0;
+ state.jogosHoje=(Number(state.jogosHoje)||0)+1;state.ultimoDiaJogos=localDay();
+ if(state.jogosHoje<=8)addEvolutionXP(xp*.25);save();checkAchievements();render();playOnce('celebracao');toast(`${msg} +${coins} 🪙 +${xp} XP`);showGameHub();
 }
 function startMath(){
  showOnlyGame('mathGame');
@@ -440,6 +692,9 @@ function unlockParents(){
  document.getElementById('pinGate').style.display='none';document.getElementById('parentContent').style.display='block';renderParentTasks();
 }
 function renderParentTasks(){
+ const dg=document.getElementById('parentDailyGoal');if(dg)dg.value=state.metaDiariaTarefas||3;
+ renderParentRewards();
+ const ei=document.getElementById('evoParentInfo');if(ei){const ep=evolutionProgress();ei.textContent=`Fase real ${state.faseReal||1} • ${Math.floor(state.xpTotal||0)} XP total • ${state.modoTesteFase?'Modo teste':'Automático'} • ${ep.label}`;}
  document.getElementById('parentTasks').innerHTML=state.tarefas.map(t=>`<div class="parent-task"><span>${t.tipo==='obrigatoria'?'📌':'⭐'} ${t.texto}</span><button onclick="editTask(${t.id})">Editar</button><button class="danger" onclick="deleteTask(${t.id})">×</button></div>`).join('')||'<small>Nenhuma tarefa.</small>';
 }
 function addTask(){
@@ -461,6 +716,37 @@ function changePin(){
 }
 document.getElementById('petTap').addEventListener('click',()=>petAction('carinho'));
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAnimation();else startIdle()});
-dailyReset();render();preloadPhase(phase()).finally(()=>startIdle());warmAllPhases();
+dailyReset();state.faseReal=realPhaseFromXP(state.xpTotal);save();render();preloadPhase(phase()).finally(()=>startIdle());warmAllPhases();
 </script>
+
+<script id="rp-voice-engine-v11">
+let voiceRecorder=null,voiceChunks=[],voiceBlob=null,voiceStream=null,voiceRecording=false;
+function openVoice(){document.getElementById('voiceOverlay').classList.add('show');renderVoiceEffect()}
+function closeVoice(){document.getElementById('voiceOverlay').classList.remove('show');if(voiceRecording&&voiceRecorder)voiceRecorder.stop()}
+function renderVoiceEffect(){document.querySelectorAll('[data-vfx]').forEach(b=>b.classList.toggle('active',b.dataset.vfx===(state.efeitoVoz||'fina')))}
+function setVoiceEffect(v){state.efeitoVoz=v;save();renderVoiceEffect();if(voiceBlob)playPetVoice()}
+async function toggleVoiceRecording(){
+ if(voiceRecording){voiceRecorder.stop();return}
+ if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)return toast('Gravação não disponível neste navegador');
+ try{
+  voiceStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+  voiceChunks=[];const type=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(t=>MediaRecorder.isTypeSupported(t))||'';
+  voiceRecorder=new MediaRecorder(voiceStream,type?{mimeType:type}:{});
+  voiceRecorder.ondataavailable=e=>{if(e.data?.size)voiceChunks.push(e.data)};
+  voiceRecorder.onstop=()=>{voiceRecording=false;voiceStream?.getTracks().forEach(t=>t.stop());voiceBlob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'});const b=document.getElementById('voiceRecordBtn');b.textContent='● Gravar novamente';b.classList.remove('recording');document.getElementById('voiceStatus').textContent='Pronto! Toque na gatinha para ela repetir.';playPetVoice()};
+  voiceRecorder.start();voiceRecording=true;const b=document.getElementById('voiceRecordBtn');b.textContent='■ Parar gravação';b.classList.add('recording');document.getElementById('voiceStatus').textContent='Gravando… fale agora.';
+ }catch(e){toast('Permita o uso do microfone para gravar a voz')}
+}
+async function playPetVoice(){
+ if(!voiceBlob)return toast('🎙️ Grave uma voz primeiro');
+ try{
+  const C=window.AudioContext||window.webkitAudioContext,ctx=new C(),buf=await ctx.decodeAudioData(await voiceBlob.arrayBuffer()),src=ctx.createBufferSource(),gain=ctx.createGain();src.buffer=buf;gain.gain.value=.95;
+  const fx=state.efeitoVoz||'fina';src.playbackRate.value=fx==='fina'?1.28:fx==='grossa'?.78:1;
+  if(fx==='robo'){const f=ctx.createBiquadFilter();f.type='bandpass';f.frequency.value=950;f.Q.value=2.5;src.connect(f).connect(gain)}else src.connect(gain);
+  gain.connect(ctx.destination);src.onended=()=>ctx.close();src.start();if(typeof playOnce==='function')playOnce('carinho');
+ }catch(e){toast('Não foi possível reproduzir esta gravação')}
+}
+document.addEventListener('click',e=>{if(e.target?.id==='petImg'&&voiceBlob)playPetVoice()});
+</script>
+
 </body></html>
