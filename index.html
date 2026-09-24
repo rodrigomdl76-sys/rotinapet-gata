@@ -90,8 +90,32 @@ body.phase-1 .pet-accessory{font-size:30px;top:31%}body.phase-3 .pet-accessory{f
 .daily-overlay{position:fixed;inset:0;z-index:78;background:#080b22f5;display:none;padding:18px;overflow:auto}.daily-overlay.show{display:block}.daily-card{max-width:520px;margin:auto;background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:16px}.daily-head{display:flex;justify-content:space-between;align-items:center}.daily-head h2{margin:0}.daily-head button{border:0;background:#ffffff18;border-radius:12px;padding:8px 12px;font-size:18px}.daily-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:13px 0}.daily-stat{background:#0e1538;border:1px solid #46508b;border-radius:15px;padding:11px 5px;text-align:center}.daily-stat b{font-size:20px;display:block}.chest{font-size:68px;text-align:center;margin:12px}.chest-btn{display:block;width:100%;border:0;border-radius:14px;padding:13px;background:#6d54ff;color:white;font-weight:950}.chest-btn:disabled{opacity:.5}.goal-box{background:#0e1538;border:1px solid #46508b;border-radius:17px;padding:13px;margin-top:12px}.goal-bar{height:11px;background:#070b22;border-radius:99px;overflow:hidden;margin-top:8px}.goal-fill{height:100%;background:linear-gradient(90deg,#755cff,#f1b34a);border-radius:99px}
 </style><style id="rp-voice-v11">
 .voice-overlay{position:fixed;inset:0;z-index:80;background:#080b22f5;display:none;padding:18px;overflow:auto}.voice-overlay.show{display:block}.voice-card{max-width:520px;margin:auto;background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:16px}.voice-head{display:flex;justify-content:space-between;align-items:center}.voice-head button{border:0;background:#ffffff18;color:#fff;border-radius:12px;padding:8px 12px;font-size:18px}.voice-mic{font-size:70px;text-align:center;margin:16px}.voice-status{text-align:center;color:#bbc4e7;min-height:24px}.voice-record{width:100%;border:0;border-radius:15px;padding:14px;background:#e04d69;color:#fff;font-weight:950}.voice-record.recording{animation:pulseVoice 1s infinite}@keyframes pulseVoice{50%{transform:scale(.97);opacity:.72}}.voice-effects{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:14px}.voice-effects button{border:1px solid #5962a3;background:#0e1538;color:#fff;border-radius:14px;padding:12px;font-weight:900}.voice-effects button.active{outline:2px solid #9c8aff;background:#29245a}.voice-note{font-size:12px;color:#aeb7d9;margin-top:12px}
-</style></head>
+</style>
+<style id="rp-profiles-v12">
+.profile-gate{position:fixed;inset:0;z-index:200;background:linear-gradient(180deg,#11183d,#080b22);display:none;align-items:center;justify-content:center;padding:20px}.profile-gate.show{display:flex}
+.profile-box{width:min(460px,100%);background:#151b45;border:1px solid #5962a3;border-radius:28px;padding:22px;text-align:center}.profile-logo{font-size:64px}.profile-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.profile-options button{border:1px solid #5962a3;background:#0e1538;color:#fff;border-radius:20px;padding:22px 8px;font-weight:950;font-size:15px}.profile-options span{display:block;font-size:45px;margin-bottom:8px}
+.profile-switch{position:fixed;right:12px;top:72px;z-index:31;border:1px solid #ffffff33;background:#12183dcc;color:white;border-radius:99px;padding:8px 11px;font-size:12px;font-weight:900;backdrop-filter:blur(8px)}
+.pin-overlay{position:fixed;inset:0;z-index:205;background:#080b22f5;display:none;align-items:center;justify-content:center;padding:20px}.pin-overlay.show{display:flex}.pin-box{width:min(390px,100%);background:#151b45;border:1px solid #5962a3;border-radius:24px;padding:20px;text-align:center}.pin-box input{width:100%;font-size:28px;text-align:center;letter-spacing:10px;padding:12px;border-radius:14px;border:1px solid #5962a3;background:#0d1435;color:#fff;margin:12px 0}.pin-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.pin-actions button{border:0;border-radius:13px;padding:12px;font-weight:900}.pin-ok{background:#654cff;color:white}
+body.child-mode .parent-only{display:none!important}
+</style>
+
+<style id="rp-reminders-v14">
+.reminder-box{background:#0e1538;border:1px solid #46508b;border-radius:16px;padding:12px;margin:10px 0}
+.reminder-row{display:grid;grid-template-columns:1fr 105px;gap:8px;align-items:center;margin:8px 0}.reminder-row input,.reminder-row select{width:100%;border:1px solid #5962a3;background:#0d1435;color:white;border-radius:10px;padding:9px}
+.reminder-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.reminder-actions button{border:0;border-radius:11px;padding:10px;font-weight:900}
+</style>
+</head>
 <body>
+<section class="profile-gate" id="profileGate">
+ <div class="profile-box"><div class="profile-logo">🐱</div><h1>RotinaPet</h1><p>Quem está usando agora?</p>
+ <div class="profile-options"><button onclick="chooseProfile('child')"><span>🧒</span>Criança</button><button onclick="chooseProfile('parent')"><span>👨‍👩‍👧</span>Responsável</button></div></div>
+</section>
+<section class="pin-overlay" id="profilePin">
+ <div class="pin-box"><h2>🔐 Área dos responsáveis</h2><p>Digite o PIN para continuar.</p><input id="profilePinInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+ <div class="pin-actions"><button onclick="cancelProfilePin()">Cancelar</button><button class="pin-ok" onclick="confirmProfilePin()">Entrar</button></div></div>
+</section>
+<button class="profile-switch" id="profileSwitch" onclick="showProfileGate()">⇄ Trocar usuário</button>
+
 <main class="app">
 <div class="layer">
 <header class="header">
@@ -128,7 +152,7 @@ body.phase-1 .pet-accessory{font-size:30px;top:31%}body.phase-3 .pet-accessory{f
 </main>
 
 
-<button class="parent-fab" onclick="openParents()" aria-label="Área dos responsáveis">⚙️</button>
+<button class="parent-fab parent-only" onclick="openParents()" aria-label="Área dos responsáveis">⚙️</button>
 <section class="parent-panel" id="parentPanel">
  <div class="parent-card">
   <h2>👨‍👩‍👧 Área dos responsáveis</h2>
@@ -145,7 +169,15 @@ body.phase-1 .pet-accessory{font-size:30px;top:31%}body.phase-3 .pet-accessory{f
    <input id="newTaskXp" type="number" min="0" max="100" value="20" placeholder="XP">
    <button onclick="addTask()">+ Adicionar</button>
    <h3>Tarefas</h3><div id="parentTasks"></div>
-   <h3>Meta diária</h3><div class="parent-reward-row"><input value="Tarefas para liberar o baú" disabled><input id="parentDailyGoal" type="number" min="1" max="10" value="3" onchange="setDailyGoal(this.value)"><span>🎯</span></div><h3>Recompensas</h3><div id="parentRewards"></div><h3>Evolução</h3>
+   
+<h3>🔔 Lembretes</h3>
+<div class="reminder-box">
+ <div class="reminder-row"><label>Ativar lembrete diário</label><select id="reminderEnabled" onchange="setReminderEnabled(this.value==='1')"><option value="0">Desativado</option><option value="1">Ativado</option></select></div>
+ <div class="reminder-row"><label>Horário</label><input id="reminderTime" type="time" value="18:00" onchange="setReminderTime(this.value)"></div>
+ <div class="reminder-actions"><button onclick="requestNotificationPermission()">Permitir notificações</button><button onclick="testReminder()">Testar lembrete</button></div>
+ <small id="reminderStatus">As notificações dependem da permissão do navegador.</small>
+</div>
+<h3>Meta diária</h3><div class="parent-reward-row"><input value="Tarefas para liberar o baú" disabled><input id="parentDailyGoal" type="number" min="1" max="10" value="3" onchange="setDailyGoal(this.value)"><span>🎯</span></div><h3>Recompensas</h3><div id="parentRewards"></div><h3>Evolução</h3>
    <p class="evo-info" id="evoParentInfo"></p>
    <button onclick="toggleTestMode()">🧪 Alternar modo teste / automático</button>
    <h3>Segurança</h3>
@@ -160,7 +192,8 @@ body.phase-1 .pet-accessory{font-size:30px;top:31%}body.phase-3 .pet-accessory{f
 
 
 
-<section class="voice-overlay" id="voiceOverlay"><div class="voice-card"><div class="voice-head"><h2>🎙️ Voz da Gatinha</h2><button onclick="closeVoice()">×</button></div><div class="voice-mic">🎤</div><div class="voice-status" id="voiceStatus">Grave uma frase curta para a gatinha repetir.</div><button class="voice-record" id="voiceRecordBtn" onclick="toggleVoiceRecording()">● Gravar voz</button><h3>Efeito da voz</h3><div class="voice-effects"><button data-vfx="normal" onclick="setVoiceEffect('normal')">🙂 Normal</button><button data-vfx="fina" onclick="setVoiceEffect('fina')">🐿️ Fina</button><button data-vfx="grossa" onclick="setVoiceEffect('grossa')">🐻 Grossa</button><button data-vfx="robo" onclick="setVoiceEffect('robo')">🤖 Robô</button></div><p class="voice-note">A gravação fica somente neste dispositivo nesta versão.</p></div></section><section class="daily-overlay" id="dailyOverlay"><div class="daily-card"><div class="daily-head"><h2>📅 Resumo de hoje</h2><button onclick="closeDaily()">×</button></div><div class="daily-grid"><div class="daily-stat"><b id="dailyTasks">0</b><small>Tarefas</small></div><div class="daily-stat"><b id="dailyStreak">0🔥</b><small>Ofensiva</small></div><div class="daily-stat"><b id="dailyCoins">0</b><small>Moedas</small></div></div><div class="goal-box"><b>🎯 Meta diária</b><div id="dailyGoalText"></div><div class="goal-bar"><div class="goal-fill" id="dailyGoalFill"></div></div></div><div class="chest">🎁</div><button class="chest-btn" id="dailyChestBtn" onclick="openDailyChest()">Abrir baú diário</button><p id="dailyChestStatus" style="text-align:center;color:#bbc4e7"></p></div></section><section class="reward-overlay" id="rewardOverlay">
+<section class="voice-overlay" id="voiceOverlay"><div class="voice-card"><div class="voice-head"><h2>🎙️ Voz da Gatinha</h2><button onclick="closeVoice()">×</button></div><div class="voice-mic">🎤</div><div class="voice-status" id="voiceStatus">Grave uma frase curta para a gatinha repetir.</div><button class="voice-record" id="voiceRecordBtn" onclick="toggleVoiceRecording()">● Gravar voz</button><h3>Efeito da voz</h3><div class="voice-effects"><button data-vfx="normal" onclick="setVoiceEffect('normal')">🙂 Normal</button><button data-vfx="fina" onclick="setVoiceEffect('fina')">🐿️ Fina</button><button data-vfx="grossa" onclick="setVoiceEffect('grossa')">🐻 Grossa</button><button data-vfx="robo" onclick="setVoiceEffect('robo')">🤖 Robô</button></div><p class="voice-note" id="voiceStorageNote">A gravação fica salva neste dispositivo.</p>
+<button id="voiceDeleteBtn" onclick="deleteSavedVoice()" style="width:100%;margin-top:8px;border:1px solid #5962a3;background:#0e1538;color:#fff;border-radius:12px;padding:10px;font-weight:800">🗑️ Apagar gravação salva</button></div></section><section class="daily-overlay" id="dailyOverlay"><div class="daily-card"><div class="daily-head"><h2>📅 Resumo de hoje</h2><button onclick="closeDaily()">×</button></div><div class="daily-grid"><div class="daily-stat"><b id="dailyTasks">0</b><small>Tarefas</small></div><div class="daily-stat"><b id="dailyStreak">0🔥</b><small>Ofensiva</small></div><div class="daily-stat"><b id="dailyCoins">0</b><small>Moedas</small></div></div><div class="goal-box"><b>🎯 Meta diária</b><div id="dailyGoalText"></div><div class="goal-bar"><div class="goal-fill" id="dailyGoalFill"></div></div></div><div class="chest">🎁</div><button class="chest-btn" id="dailyChestBtn" onclick="openDailyChest()">Abrir baú diário</button><p id="dailyChestStatus" style="text-align:center;color:#bbc4e7"></p></div></section><section class="reward-overlay" id="rewardOverlay">
  <div class="reward-card">
   <div class="reward-head"><h2>🎁 Recompensas</h2><button onclick="closeRewards()">×</button></div>
   <p>Troque suas moedas por recompensas combinadas com seus responsáveis.</p>
@@ -234,12 +267,12 @@ const PET={
  ]
 };
 const DEFAULT={
- moedas:15,streak:0,nivel:1,xp:0,faseTeste:1,pin:'1234',
+ moedas:15,streak:0,nivel:1,xp:0,faseTeste:1,pin:'1234',ultimoPerfil:'',
  ultimoReset:'',ultimoDiaOfensiva:'',jogosHoje:0,ultimoDiaJogos:'',
  xpTotal:0,faseReal:1,modoTesteFase:true,ultimaEvolucaoMostrada:1,
  temaAtual:'padrao',temasComprados:['padrao'],acessorioAtual:'nenhum',acessoriosComprados:['nenhum'],
  totalTarefasConcluidas:0,historicoDias:{},conquistas:{},totalJogosVencidos:0,
- recompensas:[{id:1,nome:'Escolher o filme',custo:20,icone:'🎬'},{id:2,nome:'15 min de jogo',custo:25,icone:'🎮'}],solicitacoesRecompensas:[],bauAbertoData:'',metaDiariaTarefas:3,efeitoVoz:'fina',
+ recompensas:[{id:1,nome:'Escolher o filme',custo:20,icone:'🎬'},{id:2,nome:'15 min de jogo',custo:25,icone:'🎮'}],solicitacoesRecompensas:[],bauAbertoData:'',metaDiariaTarefas:3,efeitoVoz:'fina',lembretesAtivos:false,horarioLembrete:'18:00',ultimoLembreteData:'',
  tarefas:[
   {id:1,texto:'Escovar os dentes',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
   {id:2,texto:'Arrumar a cama',tipo:'obrigatoria',feito:false,recompensa:5,xp:20},
@@ -733,7 +766,7 @@ async function toggleVoiceRecording(){
   voiceChunks=[];const type=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(t=>MediaRecorder.isTypeSupported(t))||'';
   voiceRecorder=new MediaRecorder(voiceStream,type?{mimeType:type}:{});
   voiceRecorder.ondataavailable=e=>{if(e.data?.size)voiceChunks.push(e.data)};
-  voiceRecorder.onstop=()=>{voiceRecording=false;voiceStream?.getTracks().forEach(t=>t.stop());voiceBlob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'});const b=document.getElementById('voiceRecordBtn');b.textContent='● Gravar novamente';b.classList.remove('recording');document.getElementById('voiceStatus').textContent='Pronto! Toque na gatinha para ela repetir.';playPetVoice()};
+  voiceRecorder.onstop=()=>{voiceRecording=false;voiceStream?.getTracks().forEach(t=>t.stop());voiceBlob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'});saveVoiceBlob(voiceBlob);const b=document.getElementById('voiceRecordBtn');b.textContent='● Gravar novamente';b.classList.remove('recording');document.getElementById('voiceStatus').textContent='Pronto! Toque na gatinha para ela repetir.';playPetVoice()};
   voiceRecorder.start();voiceRecording=true;const b=document.getElementById('voiceRecordBtn');b.textContent='■ Parar gravação';b.classList.add('recording');document.getElementById('voiceStatus').textContent='Gravando… fale agora.';
  }catch(e){toast('Permita o uso do microfone para gravar a voz')}
 }
@@ -747,6 +780,102 @@ async function playPetVoice(){
  }catch(e){toast('Não foi possível reproduzir esta gravação')}
 }
 document.addEventListener('click',e=>{if(e.target?.id==='petImg'&&voiceBlob)playPetVoice()});
+</script>
+
+
+<script id="rp-profiles-engine-v12">
+const PROFILE_KEY='ROTINAPET_LAST_PROFILE_V12';
+function profileGate(){return document.getElementById('profileGate')}
+function showProfileGate(){profileGate().classList.add('show')}
+function hideProfileGate(){profileGate().classList.remove('show')}
+function chooseProfile(type){
+ if(type==='child'){activateProfile('child');return}
+ hideProfileGate();document.getElementById('profilePin').classList.add('show');setTimeout(()=>document.getElementById('profilePinInput').focus(),80)
+}
+function cancelProfilePin(){document.getElementById('profilePin').classList.remove('show');document.getElementById('profilePinInput').value='';showProfileGate()}
+function confirmProfilePin(){
+ const input=document.getElementById('profilePinInput'),expected=String(state.pin||'1234');
+ if(input.value!==expected){input.value='';toast('PIN incorreto');return}
+ document.getElementById('profilePin').classList.remove('show');input.value='';activateProfile('parent');
+}
+function activateProfile(type){
+ state.ultimoPerfil=type;try{localStorage.setItem(PROFILE_KEY,type)}catch(e){};save();
+ document.body.classList.toggle('child-mode',type==='child');document.body.dataset.profile=type;hideProfileGate();
+ const sw=document.getElementById('profileSwitch');if(sw)sw.textContent=type==='child'?'🧒 Trocar usuário':'👨‍👩‍👧 Trocar usuário';
+ if(type==='parent'){setTimeout(()=>{if(typeof openParent==='function')openParent();},100)}
+}
+function initProfiles(){
+ let last='';try{last=localStorage.getItem(PROFILE_KEY)||state.ultimoPerfil||''}catch(e){last=state.ultimoPerfil||''}
+ if(last==='child'){activateProfile('child');return}
+ // Segurança: responsável nunca é reaberto automaticamente sem PIN.
+ if(last==='parent'){showProfileGate();return}
+ showProfileGate();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('profilePin')?.classList.contains('show'))confirmProfilePin()});
+setTimeout(initProfiles,30);
+</script>
+
+
+<script id="rp-voice-storage-v13">
+const VOICE_DB='RotinaPetAudioDB',VOICE_STORE='audios',VOICE_ID='petVoice';
+function voiceDB(){
+ return new Promise((resolve,reject)=>{
+  const r=indexedDB.open(VOICE_DB,1);
+  r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(VOICE_STORE))r.result.createObjectStore(VOICE_STORE)};
+  r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);
+ });
+}
+async function saveVoiceBlob(blob){
+ try{const db=await voiceDB();await new Promise((res,rej)=>{const tx=db.transaction(VOICE_STORE,'readwrite');tx.objectStore(VOICE_STORE).put(blob,VOICE_ID);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});db.close();updateVoiceStorageUI(true);return true}catch(e){updateVoiceStorageUI(false,true);return false}
+}
+async function loadSavedVoice(){
+ try{const db=await voiceDB();const blob=await new Promise((res,rej)=>{const tx=db.transaction(VOICE_STORE,'readonly'),r=tx.objectStore(VOICE_STORE).get(VOICE_ID);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)});db.close();
+  if(blob){voiceBlob=blob;updateVoiceStorageUI(true);return true}updateVoiceStorageUI(false);return false;
+ }catch(e){updateVoiceStorageUI(false,true);return false}
+}
+async function deleteSavedVoice(){
+ try{const db=await voiceDB();await new Promise((res,rej)=>{const tx=db.transaction(VOICE_STORE,'readwrite');tx.objectStore(VOICE_STORE).delete(VOICE_ID);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});db.close();voiceBlob=null;updateVoiceStorageUI(false);const st=document.getElementById('voiceStatus');if(st)st.textContent='Grave uma frase curta para a gatinha repetir.';toast('🗑️ Gravação apagada')}
+ catch(e){toast('Não foi possível apagar a gravação')}
+}
+function updateVoiceStorageUI(has,error=false){
+ const n=document.getElementById('voiceStorageNote'),b=document.getElementById('voiceDeleteBtn');
+ if(n)n.textContent=error?'Não foi possível acessar o armazenamento de áudio.':has?'✓ Voz salva neste dispositivo.':'Nenhuma voz salva ainda.';
+ if(b)b.style.display=has?'block':'none';
+ const st=document.getElementById('voiceStatus');if(st&&has)st.textContent='Voz salva! Toque na gatinha para ela repetir.';
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(loadSavedVoice,80));
+</script>
+
+
+<script id="rp-reminders-engine-v14">
+function syncReminderUI(){
+ const e=document.getElementById('reminderEnabled'),t=document.getElementById('reminderTime'),st=document.getElementById('reminderStatus');
+ if(e)e.value=state.lembretesAtivos?'1':'0';if(t)t.value=state.horarioLembrete||'18:00';
+ if(st)st.textContent=!('Notification'in window)?'Este navegador não oferece notificações.':Notification.permission==='granted'?'✓ Notificações permitidas.':'Permissão de notificações ainda não concedida.';
+}
+async function requestNotificationPermission(){
+ if(!('Notification'in window))return toast('Notificações não disponíveis neste navegador');
+ const p=await Notification.requestPermission();syncReminderUI();toast(p==='granted'?'🔔 Notificações ativadas':'Permissão não concedida');
+}
+function setReminderEnabled(v){state.lembretesAtivos=!!v;save();syncReminderUI();if(v&&'Notification'in window&&Notification.permission!=='granted')requestNotificationPermission()}
+function setReminderTime(v){if(!/^\d{2}:\d{2}$/.test(v))return;state.horarioLembrete=v;save();toast('⏰ Horário salvo')}
+function remainingRequiredTasks(){
+ const ts=Array.isArray(state.tarefas)?state.tarefas:[];return ts.filter(t=>(t.obrigatoria||t.tipo==='obrigatoria')&&!t.feito).length;
+}
+function sendTaskReminder(test=false){
+ if(!('Notification'in window)||Notification.permission!=='granted')return false;
+ const left=remainingRequiredTasks(),body=left?`Ainda ${left} tarefa${left>1?'s':''} obrigatória${left>1?'s':''} para concluir hoje.`:'As tarefas obrigatórias de hoje já foram concluídas. 🎉';
+ try{new Notification('🐱 RotinaPet',{body,tag:'rotinapet-tarefas',renotify:true});if(!test){state.ultimoLembreteData=localDay();save()}return true}catch(e){return false}
+}
+function testReminder(){if(Notification.permission!=='granted')return requestNotificationPermission();sendTaskReminder(true)}
+function checkScheduledReminder(){
+ if(!state.lembretesAtivos||state.ultimoLembreteData===localDay())return;
+ const now=new Date(),hm=`${pad(now.getHours())}:${pad(now.getMinutes())}`,target=state.horarioLembrete||'18:00';
+ if(hm>=target)sendTaskReminder(false);
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){checkScheduledReminder();syncReminderUI()}});
+setInterval(checkScheduledReminder,60000);
+setTimeout(()=>{syncReminderUI();checkScheduledReminder()},600);
 </script>
 
 </body></html>
