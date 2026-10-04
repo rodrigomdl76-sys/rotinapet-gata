@@ -104,7 +104,14 @@ body.child-mode .parent-only{display:none!important}
 .reminder-row{display:grid;grid-template-columns:1fr 105px;gap:8px;align-items:center;margin:8px 0}.reminder-row input,.reminder-row select{width:100%;border:1px solid #5962a3;background:#0d1435;color:white;border-radius:10px;padding:9px}
 .reminder-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.reminder-actions button{border:0;border-radius:11px;padding:10px;font-weight:900}
 </style>
-</head>
+<style id="rp-glb-prototype-v15">
+.glb-overlay{position:fixed;inset:0;z-index:250;background:#080b22f5;display:none;align-items:center;justify-content:center;padding:14px;overflow:auto}
+.glb-overlay.show{display:flex}.glb-card{width:min(520px,100%);background:#151b45;border:1px solid #7771d5;border-radius:24px;padding:15px;box-shadow:0 20px 60px #0009}
+.glb-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.glb-head h2{font-size:19px;margin:0}.glb-head button,.glb-controls button{border:0;border-radius:12px;background:#ffffff18;color:#fff;padding:10px 13px;font-weight:900}
+.glb-viewport{height:min(55vh,420px);min-height:270px;margin-top:12px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#353b79,#090e29 72%)}.glb-viewport canvas{display:block;width:100%;height:100%}
+.glb-status{min-height:22px;margin-top:9px;text-align:center;color:#c8cdef;font-size:13px}.glb-controls{display:flex;justify-content:center;gap:9px;margin-top:6px}.glb-controls button{background:#654cff}.glb-credit{margin:12px 2px 0;color:#bac3e8;font-size:11px;line-height:1.45;text-align:center}.glb-credit a{color:#d8cbff}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script></head>
 <body>
 <section class="profile-gate" id="profileGate">
  <div class="profile-box"><div class="profile-logo">🐱</div><h1>RotinaPet</h1><p>Quem está usando agora?</p>
@@ -133,7 +140,7 @@ body.child-mode .parent-only{display:none!important}
 <section class="scene">
  <div class="moon">🌙</div><div class="bubble">Você consegue!<br>Eu acredito em você! 💜</div>
  <button class="test" onclick="togglePhases()">Testar fases</button>
- <div class="phase-menu" id="phaseMenu"><button onclick="setPhase(1)">1</button><button onclick="setPhase(2)">2</button><button onclick="setPhase(3)">3</button><button onclick="setPhase(4)">4</button></div>
+ <div class="phase-menu" id="phaseMenu"><button onclick="setPhase(1)">1</button><button onclick="setPhase(2)">2</button><button onclick="setPhase(3)">3</button><button onclick="setPhase(4)">4</button><button onclick="openCuruPrototype()">🎵 3D</button></div>
  <div class="pet-wrap" id="petTap"><img id="petImg" class="pet-img" alt="Gatinha"><div class="pet-error" id="petError"></div></div>
  <div class="progress">⭐<div class="track"><div class="fill" id="xpFill"></div></div><span id="xpText">0/100</span><span id="phaseShort">Fase 1</span></div>
 </section>
@@ -878,4 +885,31 @@ setInterval(checkScheduledReminder,60000);
 setTimeout(()=>{syncReminderUI();checkScheduledReminder()},600);
 </script>
 
-</body></html>
+<section id="glbViewer" class="glb-overlay" role="dialog" aria-modal="true" aria-labelledby="glbTitle">
+ <div class="glb-card"><div class="glb-head"><h2 id="glbTitle">🎵 Protótipo de pet 3D</h2><button onclick="closeCuruPrototype()" aria-label="Fechar protótipo">✕</button></div>
+  <div class="glb-viewport" id="glbViewport"></div><div class="glb-status" id="glbStatus" role="status">Carregando modelo 3D…</div>
+  <div class="glb-controls"><button id="glbPlayPause" onclick="toggleCuruAnimation()" disabled>⏸ Pausar</button><button onclick="restartCuruAnimation()" id="glbRestart" disabled>↻ Reiniciar</button></div>
+  <p class="glb-credit">Modelo “Musician Cucurrucucu” por <a href="https://sketchfab.com/orqgamer" target="_blank" rel="noopener noreferrer">orqgamer</a>, usado sob <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. <a href="https://sketchfab.com/3d-models/musician-cucurrucucu-f349a34377ce41a5988743ce360f5144" target="_blank" rel="noopener noreferrer">Ver modelo original</a>.</p>
+ </div></section>
+<script type="module">
+import * as THREE from 'three';import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const overlay=document.getElementById('glbViewer'),viewport=document.getElementById('glbViewport'),status=document.getElementById('glbStatus'),playBtn=document.getElementById('glbPlayPause'),restartBtn=document.getElementById('glbRestart');
+let renderer,scene,camera,mixer,clipAction,clock,loadPromise,loaded=false;
+function resizeCuru(){if(!renderer||!viewport.clientWidth||!viewport.clientHeight)return;renderer.setSize(viewport.clientWidth,viewport.clientHeight,false);camera.aspect=viewport.clientWidth/viewport.clientHeight;camera.updateProjectionMatrix()}
+function renderCuru(){if(!renderer)return;const tick=()=>{if(!overlay.classList.contains('show'))return;requestAnimationFrame(tick);if(mixer)mixer.update(clock.getDelta());renderer.render(scene,camera)};clock=new THREE.Clock();requestAnimationFrame(tick)}
+async function loadCuru(){
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x11183d);camera=new THREE.PerspectiveCamera(32,1,.01,100);camera.position.set(0,1.1,5);
+ scene.add(new THREE.HemisphereLight(0xdde8ff,0x4b3869,2.1));const key=new THREE.DirectionalLight(0xffffff,2.3);key.position.set(3,5,4);scene.add(key);
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;viewport.replaceChildren(renderer.domElement);resizeCuru();
+ const gltf=await new GLTFLoader().loadAsync(new URL('./assets/models/Curu.glb',location.href).href);const model=gltf.scene;scene.add(model);
+ const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+ model.position.x-=center.x;model.position.y-=center.y;model.position.z-=center.z;model.scale.setScalar(2.45/(Math.max(size.x,size.y,size.z)||1));
+ if(!gltf.animations.length)throw new Error('O arquivo não contém animação embutida.');mixer=new THREE.AnimationMixer(model);clipAction=mixer.clipAction(gltf.animations[0]);clipAction.play();loaded=true;
+ status.textContent='Animação: '+gltf.animations[0].name;playBtn.disabled=false;restartBtn.disabled=false;resizeCuru();
+}
+window.openCuruPrototype=()=>{overlay.classList.add('show');document.body.style.overflow='hidden';resizeCuru();if(!loadPromise)loadPromise=loadCuru().catch(err=>{status.textContent='Não foi possível abrir o modelo 3D. Verifique a conexão e tente novamente.';console.error('Falha ao carregar Curu.glb:',err)});if(loaded)renderCuru();else loadPromise.then(()=>{if(overlay.classList.contains('show'))renderCuru()})};
+window.closeCuruPrototype=()=>{overlay.classList.remove('show');document.body.style.overflow=''};
+window.toggleCuruAnimation=()=>{if(!clipAction)return;clipAction.paused=!clipAction.paused;playBtn.textContent=clipAction.paused?'▶ Reproduzir':'⏸ Pausar'};
+window.restartCuruAnimation=()=>{if(!clipAction)return;clipAction.reset();clipAction.play();playBtn.textContent='⏸ Pausar'};
+window.addEventListener('resize',resizeCuru);overlay.addEventListener('click',e=>{if(e.target===overlay)window.closeCuruPrototype()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('show'))window.closeCuruPrototype()});
+</script></body></html>
