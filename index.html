@@ -907,7 +907,7 @@ async function loadCuru(){
  if(!gltf.animations.length)throw new Error('O arquivo não contém animação embutida.');mixer=new THREE.AnimationMixer(model);clipAction=mixer.clipAction(gltf.animations[0]);clipAction.play();loaded=true;
  status.textContent='Animação: '+gltf.animations[0].name;playBtn.disabled=false;restartBtn.disabled=false;resizeCuru();
 }
-window.openCuruPrototype=()=>{overlay.classList.add('show');document.body.style.overflow='hidden';resizeCuru();if(!loadPromise)loadPromise=loadCuru().catch(err=>{status.textContent='Não foi possível abrir o modelo 3D. Verifique a conexão e tente novamente.';console.error('Falha ao carregar Curu.glb:',err)});if(loaded)renderCuru();else loadPromise.then(()=>{if(overlay.classList.contains('show'))renderCuru()})};
+window.openCuruPrototype=()=>{overlay.classList.add('show');document.body.style.overflow='hidden';resizeCuru();if(!loadPromise)loadPromise=loadCuru().catch(err=>{status.textContent='Falha ao abrir o modelo 3D: '+(err?.message||String(err));console.error('Falha ao carregar Curu.glb:',err)});if(loaded)renderCuru();else loadPromise.then(()=>{if(overlay.classList.contains('show'))renderCuru()})};
 window.closeCuruPrototype=()=>{overlay.classList.remove('show');document.body.style.overflow=''};
 window.toggleCuruAnimation=()=>{if(!clipAction)return;clipAction.paused=!clipAction.paused;playBtn.textContent=clipAction.paused?'▶ Reproduzir':'⏸ Pausar'};
 window.restartCuruAnimation=()=>{if(!clipAction)return;clipAction.reset();clipAction.play();playBtn.textContent='⏸ Pausar'};
