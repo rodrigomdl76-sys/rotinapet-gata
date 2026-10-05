@@ -348,6 +348,7 @@ const spriteCache=new Map();
 const phaseReady=new Map();
 
 function spriteUrl(action,index,f=phase()){
+ if(f===1&&action==='danca')return `assets/sprites/gato/fase${f}/${action}/${action}_${pad(index)}.webp?v=brincar1`;
  return `assets/sprites/gato/fase${f}/${action}/${action}_${pad(index)}.png?v=perf3`;
 }
 function cacheKey(f,action,index){return `${f}:${action}:${index}`}
@@ -438,12 +439,13 @@ async function playOnce(action){
  actionLocked=true;
  current=action;
  const f=phase();
+ const frameMs=action==='danca'&&f===1?260:SPRITES[action].ms;
  await preloadAction(f,action);
  const my=animToken;
  let frame=1,last=0;
  const tick=async(ts)=>{
   if(my!==animToken)return;
-  if(!last || ts-last>=SPRITES[action].ms){
+  if(!last || ts-last>=frameMs){
    last=ts;
    await setFrame(action,frame,f);
    if(frame>=SPRITES[action].count){
