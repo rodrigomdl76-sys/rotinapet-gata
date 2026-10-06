@@ -338,7 +338,7 @@ function pad(n){return String(n).padStart(2,'0')}
 
 const SPRITES={
  idle:{count:8,ms:150},
- carinho:{count:10,ms:105},
+ carinho:{count:10,ms:150},
  danca:{count:12,ms:85},
  celebracao:{count:12,ms:85}
 };
@@ -353,6 +353,15 @@ function spriteUrl(action,index,f=phase()){
 }
 function cacheKey(f,action,index){return `${f}:${action}:${index}`}
 
+let beijoFramesPromise;
+function getBeijoFrames(){
+ if(!beijoFramesPromise){
+  beijoFramesPromise=fetch('assets/sprites/gato/fase1/carinho/beijo_frames.json?v=beijo1')
+   .then(r=>{if(!r.ok)throw new Error('Falha ao carregar os quadros do beijo');return r.json()})
+   .then(data=>data.frames);
+ }
+ return beijoFramesPromise;
+}
 function loadFrame(f,action,index){
  const key=cacheKey(f,action,index);
  if(spriteCache.has(key))return spriteCache.get(key);
@@ -364,7 +373,14 @@ function loadFrame(f,action,index){
    resolve(im.src);
   };
   im.onerror=()=>reject(new Error(im.src));
-  im.src=spriteUrl(action,index,f);
+  if(f===1&&action==='carinho'){
+   getBeijoFrames().then(frames=>{
+    if(!frames||!frames[index-1])throw new Error('Quadro do beijo ausente');
+    im.src='data:image/webp;base64,'+frames[index-1];
+   }).catch(reject);
+  }else{
+   im.src=spriteUrl(action,index,f);
+  }
  });
  spriteCache.set(key,p);
  return p;
